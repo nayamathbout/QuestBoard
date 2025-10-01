@@ -2,9 +2,9 @@
 
 <h1>Add a quest</h1>
 
-<form method="post" action="/QuestBoard/quest">
+<form method="post" action="/QuestBoard/quest" autocomplete="off">
     <label for="quest_name">Quest Name:</label>
-    <input type="text" id="quest_name" name="quest_name" required><br>
+    <input type="text" id="quest_name" name="quest_name" required autocomplete="off"><br>
 
     <label for="quest_type">Type: </label>
     <select id="quest_type" name="quest_type" required>
@@ -20,7 +20,7 @@
     </div>
 
     <label for="description">Description: </label>
-    <input type="text" id="description" name="description"<br>
+    <input type="text" id="description" name="description" autocomplete="off"<br>
 
     <button type="submit">Create Quest</button>
 </form>

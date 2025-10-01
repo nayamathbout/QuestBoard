@@ -3,17 +3,29 @@
 <h1>Create an account</h1>
 
 
-<form method="post" action="/QuestBoard/signup">
+<form method="post" action="/QuestBoard/signup" autocomplete="off">
     <label for="user_name">Name:</label>
-    <input type="text" id="user_name" name="user_name" required><br>
+    <input type="text" id="user_name" name="user_name" required autocomplete="off"><br>
 
     <label for="email">Email</label>
-    <input type="text" id="email" name="email" required><br>
+    <input type="text" id="email" name="email" required autocomplete="off"><br>
 
     <label for="password">Password</label>
-    <input type="text" id="password" name="password" required><br>
+    <div style="position: relative; display: inline-block;">
+        <input type="password" id="password" name="password" required autocomplete="new-password">
+        <button type="button" onclick="togglePassword()">
+            View
+        </button>
+    </div><br>
 
     <button type="submit">Create Account</button>
 </form>
+
+<script>
+function togglePassword() {
+    const pwd = document.getElementById("password");
+    pwd.type = (pwd.type === "password") ? "text" : "password";
+}
+</script>
 
 <%- include("footer"); %>
