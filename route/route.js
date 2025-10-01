@@ -45,8 +45,14 @@ router.get("/account_created", async (req, res) => {
 
 router.get("/login", async (req, res) => {
     let data = {
-        title: "Log In"
+        title: "Log In",
+        error: null
     };
+
+    if (req.session.flash && req.session.flash.error) {
+        data.error = req.session.flash.error;
+        delete req.session.flash; 
+    }
 
     res.render("QuestBoard/login", data);
 });
@@ -62,8 +68,9 @@ router.post("/login", async (req, res) => {
     } else {
         let data = {
             title: "Log In",
-            error: "Password and email are not correct."
+            error: "Email or password are not correct."
         };
+        req.session.flash = { error: "Email or passeord are not correct." };
         console.log("couldn't get user id or redirect")
         res.render("QuestBoard/login", data);
     }
