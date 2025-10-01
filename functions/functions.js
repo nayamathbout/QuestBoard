@@ -3,6 +3,7 @@
  */
 "use strict";
 
+const bcrypt = require("bcrypt");
 
 module.exports = {
     createUser,
@@ -217,12 +218,20 @@ async function showStore() {
 
 
 async function logIn(email, password) {
-    let sql = `SELECT get_user_id(?, ?) AS user_id;`;
+    let sql = `SELECT user_id, password_hashed FROM inlogging WHERE email = ?;`;
 
     const db = await mysql.createConnection(config);
-    const [result] = await db.query(sql, [email, password]);
+    const [result] = await db.query(sql, [email]);
     const row = Array.isArray(result) ? result[0] : result;
-    const userId = row && row.user_id != null ? row.user_id : null;
+
+    let userId = null;
+
+    if (row && row.password_hashed) {
+        const ok = await bcrypt.compare(password, row.password_hashed);
+        if (ok) {
+            userId = row.user_id;
+        }
+    }
 
     await db.end();
     return userId;

@@ -7,6 +7,7 @@
 
 const express = require("express");
 const router  = express.Router();
+const bcrypt = require("bcrypt");
 const questboard    = require("../functions/functions.js");
 
 function ensureLoggedIn(req, res, next) {
@@ -27,7 +28,8 @@ router.get("/signup", async (req, res) => {
 router.post("/signup", async (req, res) => {
     let { user_name, email, password } = req.body;
 
-    await questboard.createUser(user_name, email, password);
+    const hashedPassword = await bcrypt.hash(password, 12);
+    await questboard.createUser(user_name, email, hashedPassword);
 
     res.redirect("/QuestBoard/account_created");
 });
