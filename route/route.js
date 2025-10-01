@@ -148,7 +148,7 @@ router.post("/add_birthday", ensureLoggedIn, async (req, res) => {
 
 router.get("/logout", (req, res) => {
     req.session.destroy(err => {
-        res.redirect("/QuestBoard");
+        res.redirect("/QuestBoard/login");
     });
 });
 
