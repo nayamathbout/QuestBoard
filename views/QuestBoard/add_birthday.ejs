@@ -6,7 +6,8 @@
 <form method="post" action="/QuestBoard/add_birthday">
 
     <label for="birthday">Your Birthday</label>
-    <input type="date" id="birthday" name="birthday" required><br>
+    <input type="date" id="birthday" name="birthday" 
+        max="<%= new Date().toISOString().split('T')[0] %>" required><br>
     <button type="submit">Add</button>
 </form>
 

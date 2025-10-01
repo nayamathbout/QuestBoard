@@ -28,19 +28,23 @@
 <script>
     const questTypeSelect = document.getElementById('quest_type');
     const dueDateContainer = document.getElementById('due_date_container');
+    const dueDateInput = document.getElementById('due_date');
 
-    questTypeSelect.addEventListener('change', () => {
-    if (questTypeSelect.value === 'other') {
-        dueDateContainer.style.display = 'block';
-        dueDateInput.disabled = false;
-    } else {
-        dueDateContainer.style.display = 'none';
-        dueDateInput.value = '';
-        dueDateInput.disabled = true;
+    const today = new Date().toISOString().split("T")[0];
+    dueDateInput.min = today;
+
+    function toggleDue() {
+        if (questTypeSelect.value === 'other') {
+            dueDateContainer.style.display = 'block';
+            dueDateInput.disabled = false;
+        } else {
+            dueDateContainer.style.display = 'none';
+            dueDateInput.value = '';
+            dueDateInput.disabled = true;
+        }
     }
+
     questTypeSelect.addEventListener('change', toggleDue);
-    toggleDue();
-    });
 </script>
 
 <%- include("footer"); %>
