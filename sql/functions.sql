@@ -23,6 +23,7 @@ DROP PROCEDURE IF EXISTS show_user_streaks;
 DROP PROCEDURE IF EXISTS show_user_rewards;
 DROP PROCEDURE IF EXISTS show_user_profile;
 DROP PROCEDURE IF EXISTS show_store;
+DROP PROCEDURE IF EXISTS add_age_to_profile;
 DROP TRIGGER IF EXISTS complete_status;
 --DROP EVENT IF EXISTS late_status;
 DROP FUNCTION IF EXISTS get_user_id;
@@ -54,7 +55,7 @@ BEGIN
         (a_user_id, a_user_name);
 END;;
 
-CREATE PROCEDURE create_quest(
+    CREATE PROCEDURE create_quest(
     IN a_quest_name VARCHAR(255),
     IN a_user_id INT,
     IN a_quest_type VARCHAR(50),
@@ -67,11 +68,8 @@ BEGIN
     IF a_due_time IS NULL THEN
         IF a_quest_type = 'daily' THEN
             SET b_due_time = CURDATE();
-        ELSE
-            SET b_due_time = DATE_ADD(
-                CURDATE(),
-                INTERVAL ((8 - DAYOFWEEK(CURDATE())) % 7) DAY
-            );
+        ELSEIF a_quest_type = 'weekly' THEN
+            SET b_due_time = DATE_ADD(CURDATE(), INTERVAL 7 DAY);
         END IF;
     ELSE
         SET b_due_time = a_due_time;
@@ -428,37 +426,34 @@ BEGIN
     RETURN a_user_id;
 END;;
 
-
+DELIMITER ;
 ---
 --- Events
 ---
 
 CREATE EVENT reset_daily_quests
-ON SCHEDULE EVERY 1 DAY
-DO 
-BEGIN
-    UPDATE quests
-        SET 
-            due_time = CURDATE(),
-            quest_status = 'uncompleted'
-        WHERE quest_type = 'daily';
-END;;
+    ON SCHEDULE EVERY 1 DAY
+    STARTS CURRENT_DATE + INTERVAL 1 DAY
+DO
+UPDATE quests
+SET
+    due_time     = CURRENT_DATE + INTERVAL 1 DAY,
+    quest_status = 'uncompleted'
+WHERE quest_type = 'daily';
 
 CREATE EVENT reset_weekly_quests
-ON SCHEDULE EVERY 1 DAY
-    STARTS CURRENT_DATE + INTERVAL 0 SECOND
+    ON SCHEDULE EVERY 1 DAY
+    STARTS CURRENT_DATE + INTERVAL 1 DAY
 DO
-BEGIN
-    IF DAYOFWEEK(CURDATE()) = 1 THEN
-        UPDATE quests
-        SET due_time = CURDATE(),
-            quest_status = 'uncompleted'
-        WHERE quest_type = 'weekly';
-    END IF;
-END;;
-
-
-DELIMITER ;
+UPDATE quests
+SET
+    due_time = DATE_ADD(
+        due_time,
+        INTERVAL 7 * (DATEDIFF(CURRENT_DATE, due_time) DIV 7 + 1) DAY
+        ),
+    quest_status = 'uncompleted'
+WHERE quest_type = 'weekly'
+AND due_time <= CURRENT_DATE;
 
 /* CREATE EVENT late_status
 ON SCHEDULE EVERY 1 DAY
