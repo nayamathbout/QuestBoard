@@ -1,0 +1,84 @@
+<%- include("header", {title: title}); %>
+
+<h1>Welcome to QuestBoard</h1>
+
+<p>What do you wanna do today?</p>
+
+<ul><li><a href="quest">Create a quest</a></li></ul>
+<ul><li><a href="profile">View Profile</a></li></ul>
+
+
+<p>Your Rewards:</p>
+<table border="1">
+<tr>
+    <th>Coins:</th><td><%= rewards?.coins %></td>
+</tr>
+<tr>
+    <th>XP:</th><td><%= rewards?.xp %></td>
+</tr>
+</table>
+
+<p>Upcoming Quests:</p>
+<table border="1">
+    <tr>
+        <th>Quest_name</th>
+        <th>Description</th>
+        <th>Type</th>
+        <th>Due Date</th>
+        <th>Due In</th>
+        <th>Status</th>
+    </tr>
+<% for (const row of upcomingQuests) { %>
+    <tr>
+        <td><%= row.quest_name %></td>
+        <td><%= row.quest_description %></td>
+        <td><%= row.quest_type %></td>
+        <td><%= row.due_time %></td>
+        <td><%= row.due_in%></td>
+        <td><%= row.quest_status %></td>
+        <td>
+        <form method="post" action="/QuestBoard/dashboard">
+            <input type="hidden" name="quest_id" value="<%= row.quest_id %>">
+            <button type="submit">Complete!</button>
+        </form>
+        </td>
+    </tr>
+<% }; %>
+</table>
+
+<p>Completed Quests:</p>
+<table border="1">
+    <tr>
+        <th>Quest name</th>
+        <th>Quest Description</th>
+        <th>Type</th>
+        <th>Completed on</th>
+    </tr>
+<% for (const row of completedQuests) { %>
+    <tr>
+        <td><%= row.quest_name %></td>
+        <td><%= row.quest_description %></td>
+        <td><%= row.quest_type %></td>
+        <td><%= row.completed_time %></td>
+    </tr>
+<% }; %>
+</table>
+
+
+<p>Daily Quests:</p>
+<table border="1">
+    <tr>
+        <th>Quest name</th>
+        <th>Description</th>
+        <th>Status</th>
+    </tr>
+<% for (const row of dailyQuests) { %>
+    <tr>
+        <td><%= row.quest_name %></td>
+        <td><%= row.quest_description %></td>
+        <td><%= row.quest_status %></td>
+    </tr>
+<% }; %>
+</table>
+
+<%- include("footer"); %>

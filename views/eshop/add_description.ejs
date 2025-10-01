@@ -1,0 +1,14 @@
+<%- include("header", {title: title}); %>
+
+<h1>Add describtion to a quest: </h1>
+
+
+<form method="post" action="/QuestBoard/add_description">
+    <input type="hidden" name="quest_id" value="<%= quest_id %>">
+
+    <label for="quest_description">Quest description: </label>
+    <input type="text" id="quest_description" name="quest_description" required><br>
+    <button type="submit">Add</button>
+</form>
+
+<%- include("footer"); %>

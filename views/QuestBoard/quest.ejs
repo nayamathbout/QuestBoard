@@ -1,0 +1,46 @@
+<%- include("header", {title: title}); %>
+
+<h1>Add a quest</h1>
+
+<form method="post" action="/QuestBoard/quest">
+    <label for="quest_name">Quest Name:</label>
+    <input type="text" id="quest_name" name="quest_name" required><br>
+
+    <label for="quest_type">Type: </label>
+    <select id="quest_type" name="quest_type" required>
+        <option value="" disabled selected>Select type</option>
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="other">One time quest</option>
+    </select><br>
+
+    <div id="due_date_container" style="display:none; margin-top:10px;">
+    <label for="due_date">Due date:</label>
+    <input type="date" id="due_date" name="due_date">
+    </div>
+
+    <label for="description">Description: </label>
+    <input type="text" id="description" name="description"<br>
+
+    <button type="submit">Create Quest</button>
+</form>
+
+<script>
+    const questTypeSelect = document.getElementById('quest_type');
+    const dueDateContainer = document.getElementById('due_date_container');
+
+    questTypeSelect.addEventListener('change', () => {
+    if (questTypeSelect.value === 'other') {
+        dueDateContainer.style.display = 'block';
+        dueDateInput.disabled = false;
+    } else {
+        dueDateContainer.style.display = 'none';
+        dueDateInput.value = '';
+        dueDateInput.disabled = true;
+    }
+    questTypeSelect.addEventListener('change', toggleDue);
+    toggleDue();
+    });
+</script>
+
+<%- include("footer"); %>

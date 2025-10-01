@@ -1,0 +1,4 @@
+DROP DATABASE IF EXISTS questboard;
+
+CREATE DATABASE questboard;
+

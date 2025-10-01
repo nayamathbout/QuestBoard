@@ -1,0 +1,40 @@
+<%- include("header", {title: title}); %>
+
+<h1>Your Profile</h1>
+
+<p>About You:</p>
+
+<table border="1">
+<tr>
+    <th>User:</th><td><%= profile?.user_name %></td>
+</tr>
+<tr>
+    <th>Age:</th>
+    <td>
+        <% if (!profile.user_birthday) { %>
+            <ul><li><a href="add_birthday">Add your birthday</a></li></ul>
+        <% } else { %>
+            <%= profile.user_birthday %>
+        <% } %>
+    </td>
+</tr>
+<tr>
+    <th>Email:</th><td><%= profile?.email %></td>
+</tr>
+<tr>
+    <th>Password:</th><td><%= profile?.password_hashed %></td>
+</tr>
+</table>
+
+<p>Your Rewards:</p>
+
+<table border="1">
+<tr>
+    <th>Coins:</th><td><%= rewards?.coins %></td>
+</tr>
+<tr>
+    <th>XP:</th><td><%= rewards?.xp %></td>
+</tr>
+</table>
+
+<%- include("footer"); %>

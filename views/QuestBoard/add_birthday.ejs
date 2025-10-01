@@ -1,0 +1,13 @@
+<%- include("header", {title: title}); %>
+
+<h1>Add your birthday: </h1>
+
+
+<form method="post" action="/QuestBoard/add_birthday">
+
+    <label for="birthday">Your Birthday</label>
+    <input type="date" id="birthday" name="birthday" required><br>
+    <button type="submit">Add</button>
+</form>
+
+<%- include("footer"); %>
