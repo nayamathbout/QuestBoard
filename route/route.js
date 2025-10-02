@@ -19,19 +19,33 @@ function ensureLoggedIn(req, res, next) {
 
 router.get("/signup", async (req, res) => {
     let data = {
-        title: "Sign up"
+        title: "Sign up",
+        error: null
     };
+
+    if (req.session.flash && req.session.flash.error) {
+        data.error = req.session.flash.error;
+        delete req.session.flash; 
+    }
 
     res.render("QuestBoard/signup", data);
 });
 
 router.post("/signup", async (req, res) => {
     let { user_name, email, password } = req.body;
+    const emailValidation = await questboard.validateEmail(email);
+    const passwordValidation = await questboard.validatePassword(password);
 
-    const hashedPassword = await bcrypt.hash(password, 12);
-    await questboard.createUser(user_name, email, hashedPassword);
+    if (emailValidation === true){
+        if (passwordValidation === true) {
+            const hashedPassword = await bcrypt.hash(password, 12);
+            await questboard.createUser(user_name, email, hashedPassword);
+            res.redirect("/QuestBoard/account_created");}
+    }
 
-    res.redirect("/QuestBoard/account_created");
+    req.session.flash = { error: "Email or password are not correct." };
+    return res.redirect("/QuestBoard/signup");
+
 });
 
 

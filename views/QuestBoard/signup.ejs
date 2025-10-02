@@ -21,6 +21,18 @@
     <button type="submit">Create Account</button>
 </form>
 
+<p>Password must contain at least:</p>
+    <ul> 
+        <li>one lowercase letter</li>
+        <li>one uppercase letter</li>
+        <li>one digit (? = . * /)</li>
+        <li>8 characters</li>
+    </ul>
+
+<% if (error) { %>
+    <div class="error"><%= error %></div>
+<% } %>
+
 <script>
 function togglePassword() {
     const pwd = document.getElementById("password");

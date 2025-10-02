@@ -25,7 +25,9 @@ module.exports = {
     showStore,
     logIn,
     addBirthday,
-    addDescriptionToQuest
+    addDescriptionToQuest,
+    validateEmail, 
+    validatePassword
 };
 
 
@@ -254,4 +256,12 @@ async function addDescriptionToQuest(quest_id, quest_description) {
     await db.query(sql, [quest_id, quest_description]);
 
     await db.end();
+}
+
+async function validateEmail(email) {
+    return /^[a-z0-9][a-z0-9._%+-]*@[a-z0-9.-]+\.[a-z]{2,}$/i.test(email);
+}
+
+async function validatePassword(password) {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
 }
