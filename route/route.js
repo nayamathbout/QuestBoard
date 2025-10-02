@@ -44,10 +44,7 @@ router.get("/account_created", async (req, res) => {
 });
 
 router.get("/login", async (req, res) => {
-    let data = {
-        title: "Log In",
-        error: null
-    };
+    let data = { title: "Log In", error: null };
 
     if (req.session.flash && req.session.flash.error) {
         data.error = req.session.flash.error;
@@ -62,19 +59,13 @@ router.post("/login", async (req, res) => {
     const userId = await questboard.logIn(email, password);
 
     if (userId) {
-
         req.session.userId = userId;
-        res.redirect("/QuestBoard/dashboard");
-    } else {
-        let data = {
-            title: "Log In",
-            error: "Email or password are not correct."
-        };
-        req.session.flash = { error: "Email or passeord are not correct." };
-        console.log("couldn't get user id or redirect")
-        res.render("QuestBoard/login", data);
+        return res.redirect("/QuestBoard/dashboard");
     }
-}); 
+
+    req.session.flash = { error: "Email or password are not correct." };
+    return res.redirect("/QuestBoard/login");
+});
 
 router.get("/dashboard", ensureLoggedIn, async (req, res) => {
     let user_id = req.session.userId;
