@@ -35,12 +35,16 @@ router.post("/signup", async (req, res) => {
     let { user_name, email, password } = req.body;
     const emailValidation = await questboard.validateEmail(email);
     const passwordValidation = await questboard.validatePassword(password);
+    const emailIsUnique = await questboard.ensureEmailIsUnique(email);
 
     if (emailValidation === true){
         if (passwordValidation === true) {
-            const hashedPassword = await bcrypt.hash(password, 12);
-            await questboard.createUser(user_name, email, hashedPassword);
-            res.redirect("/QuestBoard/account_created");}
+            if (emailIsUnique === true) {
+                const hashedPassword = await bcrypt.hash(password, 12);
+                await questboard.createUser(user_name, email, hashedPassword);
+                return res.redirect("/QuestBoard/account_created");
+            }
+        }
     }
 
     req.session.flash = { error: "Email or password are not correct." };

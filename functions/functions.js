@@ -27,7 +27,8 @@ module.exports = {
     addBirthday,
     addDescriptionToQuest,
     validateEmail, 
-    validatePassword
+    validatePassword,
+    ensureEmailIsUnique
 };
 
 
@@ -264,4 +265,17 @@ async function validateEmail(email) {
 
 async function validatePassword(password) {
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
+}
+
+async function ensureEmailIsUnique(email) {
+    let sql = `SELECT email FROM inlogging WHERE email = ?`;
+    const db = await mysql.createConnection(config);
+    const [rows] = await db.query(sql, [email]);
+
+    if (rows.length === 0){
+        return true;
+    }
+    else {
+        return false;
+    }
 }
