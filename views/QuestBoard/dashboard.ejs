@@ -43,10 +43,13 @@
         <td><%= row.due_in%></td>
         <td><%= row.quest_status %></td>
         <td>
-        <form method="post" action="/QuestBoard/dashboard">
-            <input type="hidden" name="quest_id" value="<%= row.quest_id %>">
-            <button type="submit">Complete!</button>
-        </form>
+            <ul><li><a href="delete_quest?quest_id=<%= row.quest_id %>">Delete</a></li></ul>
+        </td>
+        <td>
+            <form method="post" action="/QuestBoard/dashboard">
+                <input type="hidden" name="quest_id" value="<%= row.quest_id %>">
+                <button type="submit">Complete!</button>
+            </form>
         </td>
     </tr>
 <% }; %>
@@ -93,6 +96,9 @@
                 <%= row.quest_description %>
             <% } %></td>
         <td><%= row.quest_status %></td>
+        <td>
+            <ul><li><a href="delete_quest?quest_id=<%= row.quest_id %>">Delete</a></li></ul>
+        </td>
     </tr>
 <% }; %>
 </table>

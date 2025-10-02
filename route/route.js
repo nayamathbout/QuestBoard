@@ -153,6 +153,11 @@ router.post("/add_description", ensureLoggedIn, async (req, res) => {
 });
 
 
+router.get("/delete_quest", ensureLoggedIn, async (req, res) => {
+    const quest_id = req.query.quest_id;
+    await questboard.deleteQuest(quest_id);
+        res.redirect("/QuestBoard/dashboard");
+});
 
 router.get("/logout", (req, res) => {
     req.session.destroy(err => {
