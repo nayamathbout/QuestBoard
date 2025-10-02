@@ -89,6 +89,10 @@ BEGIN
     UPDATE quests
     SET quest_description = a_description
     WHERE quest_id = a_quest_id;
+
+    UPDATE completed_quests
+    SET quest_description = a_description
+    WHERE quest_id = a_quest_id;
 END;;
 
 CREATE PROCEDURE complete_quest(
@@ -257,6 +261,7 @@ CREATE PROCEDURE show_completed_quests(
 )
 BEGIN 
     SELECT 
+        quest_id,
         quest_name,
         quest_description,
         DATE_FORMAT(completed_time, '%Y-%m-%d') AS completed_time,
@@ -270,6 +275,7 @@ CREATE PROCEDURE show_upcoming_quests(
 )
 BEGIN
     SELECT
+        quest_id,
         quest_name,
         quest_description,
         quest_type,
@@ -287,6 +293,7 @@ CREATE PROCEDURE show_daily_quests(
 )
 BEGIN
     SELECT 
+        quest_id,
         quest_name,
         quest_description,
         quest_status

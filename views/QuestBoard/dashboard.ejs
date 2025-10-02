@@ -31,7 +31,13 @@
 <% for (const row of upcomingQuests) { %>
     <tr>
         <td><%= row.quest_name %></td>
-        <td><%= row.quest_description %></td>
+        <td>
+            <% if (!row.quest_description) { %>
+                <ul><li><a href="add_description?quest_id=<%= row.quest_id %>">Add description</a></li></ul>
+            <% } else { %>
+                <%= row.quest_description %>
+            <% } %>
+        </td>
         <td><%= row.quest_type %></td>
         <td><%= row.due_time %></td>
         <td><%= row.due_in%></td>
@@ -57,7 +63,12 @@
 <% for (const row of completedQuests) { %>
     <tr>
         <td><%= row.quest_name %></td>
-        <td><%= row.quest_description %></td>
+        <td>
+            <% if (!row.quest_description) { %>
+                <ul><li><a href="add_description?quest_id=<%= row.quest_id %>">Add description</a></li></ul>
+            <% } else { %>
+                <%= row.quest_description %>
+            <% } %></td>
         <td><%= row.quest_type %></td>
         <td><%= row.completed_time %></td>
     </tr>
@@ -75,7 +86,12 @@
 <% for (const row of dailyQuests) { %>
     <tr>
         <td><%= row.quest_name %></td>
-        <td><%= row.quest_description %></td>
+        <td>
+            <% if (!row.quest_description) { %>
+                <ul><li><a href="add_description?quest_id=<%= row.quest_id %>">Add description</a></li></ul>
+            <% } else { %>
+                <%= row.quest_description %>
+            <% } %></td>
         <td><%= row.quest_status %></td>
     </tr>
 <% }; %>

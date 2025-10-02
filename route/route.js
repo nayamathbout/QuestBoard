@@ -144,6 +144,23 @@ router.post("/add_birthday", ensureLoggedIn, async (req, res) => {
 
 //
 
+router.get("/add_description", ensureLoggedIn, async (req, res) => {
+    const quest_id = req.query.quest_id;
+    let data = {
+        title: "Add description to quest",
+        quest_id
+    };
+
+    res.render("QuestBoard/add_description", data);
+});
+
+router.post("/add_description", ensureLoggedIn, async (req, res) => {
+    let { quest_id, description } = req.body;
+    await questboard.addDescriptionToQuest(quest_id, description);
+
+    res.redirect("/QuestBoard/dashboard");
+});
+
 
 
 router.get("/logout", (req, res) => {
