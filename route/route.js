@@ -78,6 +78,7 @@ router.post("/login", async (req, res) => {
 
     if (userId) {
         req.session.userId = userId;
+        await questboard.updateLoginStreak(userId);
         return res.redirect("/QuestBoard/dashboard");
     }
 
@@ -130,9 +131,11 @@ router.get("/profile", ensureLoggedIn, async (req, res) => {
     let user_id = req.session.userId;
     const profile = await questboard.showUserProfile(user_id);
     const rewards = await questboard.showUserRewards(user_id);
+    const streaks = await questboard.showUserStreaks(user_id);
+    console.log(streaks);
 
     res.render("QuestBoard/profile", {
-        title: "View Profile", profile, rewards});
+        title: "View Profile", profile, rewards, streaks});
 });
 
 router.get("/add_birthday", ensureLoggedIn, async (req, res) => {

@@ -8,11 +8,11 @@ DROP PROCEDURE IF EXISTS create_quest;
 DROP PROCEDURE IF EXISTS add_description_to_quest;
 DROP PROCEDURE IF EXISTS complete_quest;
 DROP PROCEDURE IF EXISTS get_badge;
-DROP PROCEDURE IF EXISTS start_streak;
+DROP PROCEDURE IF EXISTS update_login_streak;
+DROP PROCEDURE IF EXISTS update_quest_streak;
 DROP PROCEDURE IF EXISTS buy_items;
 DROP PROCEDURE IF EXISTS earn_coins;
 DROP PROCEDURE IF EXISTS earn_xp;
-DROP PROCEDURE IF EXISTS end_streak;
 DROP PROCEDURE IF EXISTS delete_quest;
 DROP PROCEDURE IF EXISTS show_quests;
 DROP PROCEDURE IF EXISTS show_completed_quests;
@@ -25,11 +25,11 @@ DROP PROCEDURE IF EXISTS show_user_profile;
 DROP PROCEDURE IF EXISTS show_store;
 DROP PROCEDURE IF EXISTS add_age_to_profile;
 DROP TRIGGER IF EXISTS complete_status;
---DROP EVENT IF EXISTS late_status;
 DROP FUNCTION IF EXISTS get_user_id;
 DROP FUNCTION IF EXISTS add_age_to_profile;
 DROP EVENT IF EXISTS reset_daily_quests;
 DROP EVENT IF EXISTS reset_weekly_quests;
+DROP EVENT IF EXISTS late_status;
 
 DELIMITER ;;
 
@@ -53,9 +53,15 @@ BEGIN
         (user_id, user_name)
     VALUES
         (a_user_id, a_user_name);
+
+    INSERT INTO ongoing_streaks
+        (streak_id, user_id)
+    VALUES
+        (1, a_user_id),
+        (2, a_user_id);
 END;;
 
-    CREATE PROCEDURE create_quest(
+CREATE PROCEDURE create_quest(
     IN a_quest_name VARCHAR(255),
     IN a_user_id INT,
     IN a_quest_type VARCHAR(50),
@@ -138,15 +144,48 @@ BEGIN
         (a_user_id, a_badge_id);
 END;;
 
-CREATE PROCEDURE start_streak(
-    IN a_user_id INT,
-    IN a_streak_id INT
+CREATE PROCEDURE update_login_streak(
+    IN a_user_id INT
 )
 BEGIN
-    INSERT INTO ongoing_streaks 
-        (user_id, streak_id)
-    VALUES
-        (a_user_id, a_streak_id);
+    DECLARE a_last_login DATE;
+    SELECT last_login INTO a_last_login
+    FROM ongoing_streaks
+    WHERE user_id = a_user_id 
+    AND streak_id = 1;
+
+    IF a_last_login IS NULL 
+    THEN UPDATE ongoing_streaks SET 
+        last_login = CURRENT_DATE(),
+        streak_duration = 1 
+    WHERE user_id = a_user_id
+    AND streak_id = 1;
+
+    ELSEIF DATEDIFF(CURRENT_DATE(), a_last_login) = 1
+    THEN UPDATE ongoing_streaks SET 
+        last_login = CURRENT_DATE(),
+        streak_duration = streak_duration + 1
+        WHERE user_id = a_user_id 
+        AND streak_id = 1;
+
+    ELSEIF DATEDIFF(CURRENT_DATE(), a_last_login) > 1
+    THEN UPDATE ongoing_streaks SET
+        last_login = CURRENT_DATE(),
+        streak_duration = 1
+    WHERE user_id = a_user_id
+    AND streak_id = 1;
+
+    END IF;
+END;;
+
+CREATE PROCEDURE update_quest_streak(
+    IN a_user_id INT
+)
+BEGIN
+    UPDATE ongoing_streaks SET
+        streak_duration = streak_duration + 1
+    WHERE user_id = a_user_id
+    AND streak_id = 2;
 END;;
 
 
@@ -222,16 +261,6 @@ BEGIN
     UPDATE profiles
     SET xp = xp + a_xp
     WHERE user_id = a_user_id;
-END;;
-
-CREATE PROCEDURE end_streak(
-    IN streak_id INT,
-    IN user_id INT
-)
-BEGIN 
-    DELETE FROM ongoing_streaks
-    WHERE streak_id = a_streak_id
-    AND user_id = a_user_id;
 END;;
 
 CREATE PROCEDURE delete_quest(
@@ -323,8 +352,9 @@ CREATE PROCEDURE show_user_streaks(
 )
 BEGIN
     SELECT 
-        s.streak_name AS 'Streak name',
-        s.streak_description AS 'Describtion'
+        s.streak_name AS 'streak_name',
+        s.streak_description AS 'streak_description',
+        os.streak_duration AS 'streak_duration'
     FROM streaks AS s
     JOIN ongoing_streaks AS os
         ON os.streak_id = s.streak_id
@@ -407,10 +437,23 @@ BEGIN
             UPDATE completed_quests
             SET quest_status = 'completed late'
             WHERE quest_id = NEW.quest_id;
+
+            UPDATE ongoing_streaks 
+            SET streak_duration = 0
+            WHERE user_id = NEW.user_id
+            AND streak_id = 2;
+
         END IF;
+
+    ELSEIF NEW.completed_time IS NULL
+    AND OLD.quest_status = 'uncompleted' THEN
+        UPDATE ongoing_streaks
+        SET streak_duration = 0
+        WHERE user_id = NEW.user_id
+        AND streak_id = 2;
+
     END IF;
 END;;
-
 ---
 --- funtions
 ---
@@ -444,8 +487,9 @@ CREATE EVENT reset_daily_quests
 DO
 UPDATE quests
 SET
-    due_time     = CURRENT_DATE + INTERVAL 1 DAY,
-    quest_status = 'uncompleted'
+    due_time = CURRENT_DATE + INTERVAL 1 DAY,
+    quest_status = 'uncompleted',
+    completed_time = NULL
 WHERE quest_type = 'daily';
 
 CREATE EVENT reset_weekly_quests
@@ -458,14 +502,16 @@ SET
         due_time,
         INTERVAL 7 * (DATEDIFF(CURRENT_DATE, due_time) DIV 7 + 1) DAY
         ),
-    quest_status = 'uncompleted'
+    quest_status = 'uncompleted', 
+    completed_time = NULL
 WHERE quest_type = 'weekly'
 AND due_time <= CURRENT_DATE;
 
-/* CREATE EVENT late_status
+CREATE EVENT late_status
 ON SCHEDULE EVERY 1 DAY
 DO
     UPDATE quests
     SET quest_status = 'late'
     WHERE completed_time IS NULL
-    AND due_time < NOW(); */
+    AND due_time < NOW()
+    AND quest_type = 'other'; 

@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS owned_badges;
 DROP TABLE IF EXISTS badges;
 DROP TABLE IF EXISTS quests;
 DROP TABLE IF EXISTS profiles;
+DROP TABLE IF EXISTS completed_quests;
 DROP TABLE IF EXISTS inlogging;
 
 CREATE TABLE inlogging 
@@ -60,7 +61,8 @@ CREATE TABLE completed_quests
     completed_time DATE NOT NULL,
     quest_status VARCHAR(20),
 
-    PRIMARY KEY(quest_id)
+    PRIMARY KEY(quest_id),
+    FOREIGN KEY(user_id) REFERENCES inlogging(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE badges
@@ -84,7 +86,7 @@ CREATE TABLE owned_badges
 
 CREATE TABLE streaks 
 (
-    streak_id int AUTO_INCREMENT NOT NULL,
+    streak_id int NOT NULL,
     streak_name VARCHAR(50) NOT NULL,
     streak_description TEXT,
 
@@ -96,6 +98,8 @@ CREATE TABLE ongoing_streaks
 (
     streak_id INT NOT NULL,
     user_id INT NOT NULL,
+    streak_duration INT DEFAULT 0,
+    last_login DATE,
 
     PRIMARY KEY(streak_id, user_id),
     FOREIGN KEY(user_id) REFERENCES inlogging(user_id) ON DELETE CASCADE,

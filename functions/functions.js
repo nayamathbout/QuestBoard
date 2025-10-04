@@ -28,7 +28,8 @@ module.exports = {
     addDescriptionToQuest,
     validateEmail, 
     validatePassword,
-    ensureEmailIsUnique
+    ensureEmailIsUnique,
+    updateLoginStreak
 };
 
 
@@ -67,13 +68,15 @@ async function createQuest(quest_name, user_id, quest_type, due_date, descriptio
 
 async function completeQuest(quest_id, user_id) {
     let sql = `CALL complete_quest(?);`;
-    let sqlcoins = `CALL earn_coins(?, ?)`
-    let sqlxp = `CALL earn_xp(?, ?)`
+    let sqlcoins = `CALL earn_coins(?, ?)`;
+    let sqlxp = `CALL earn_xp(?, ?)`;
+    let sqlStreak = `CALL update_quest_streak(?)`;
     const db = await mysql.createConnection(config);
 
     await db.query(sql, [quest_id]);
     await db.query(sqlcoins, [quest_id, user_id]);
     await db.query(sqlxp, [quest_id, user_id]);
+    await db.query(sqlStreak, [user_id]);
 
     await db.end();
 }
@@ -270,7 +273,7 @@ async function validatePassword(password) {
 async function ensureEmailIsUnique(email) {
     let sql = `SELECT email FROM inlogging WHERE email = ?`;
     const db = await mysql.createConnection(config);
-    const [rows] = await db.query(sql, [email]);
+    const rows = await db.query(sql, [email]);
 
     if (rows.length === 0){
         return true;
@@ -278,4 +281,13 @@ async function ensureEmailIsUnique(email) {
     else {
         return false;
     }
+}
+
+async function updateLoginStreak(user_id) {
+    let sql = `CALL update_login_streak(?);`;
+    const db = await mysql.createConnection(config);
+
+    await db.query(sql, [user_id]);
+
+    await db.end();
 }

@@ -34,4 +34,20 @@
 </tr>
 </table>
 
+<p>Your Streaks:</p>
+<table border="1">
+    <tr>
+        <th>Streak name:</th>
+        <th>Streak Description:</th>
+        <th>Streak duration:</th>
+    </tr>
+<% for (const row of streaks) { %>
+    <tr>
+        <td><%= row.streak_name %></td>
+        <td><%= row.streak_description %></td>
+        <td><%= row.streak_duration %></td>
+    </tr>
+<% }; %>
+</table>
+
 <%- include("footer"); %>
