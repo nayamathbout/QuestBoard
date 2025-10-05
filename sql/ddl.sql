@@ -67,7 +67,7 @@ CREATE TABLE completed_quests
 
 CREATE TABLE badges
 (
-    badge_id INT AUTO_INCREMENT NOT NULL,
+    badge_id INT NOT NULL,
     badge_name VARCHAR(50) NOT NULL,
     badge_description TEXT,
 

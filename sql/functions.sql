@@ -25,6 +25,7 @@ DROP PROCEDURE IF EXISTS show_user_profile;
 DROP PROCEDURE IF EXISTS show_store;
 DROP PROCEDURE IF EXISTS add_age_to_profile;
 DROP TRIGGER IF EXISTS complete_status;
+DROP TRIGGER IF EXISTS earn_streak_badges;
 DROP FUNCTION IF EXISTS get_user_id;
 DROP FUNCTION IF EXISTS add_age_to_profile;
 DROP EVENT IF EXISTS reset_daily_quests;
@@ -131,6 +132,15 @@ BEGIN
         (quest_id, user_id, quest_name, quest_description, quest_type, completed_time)
     VALUES
         (a_quest_id, a_user_id, a_quest_name, a_quest_description, a_quest_type, CURDATE());
+
+    IF a_quest_type = 'weekly' THEN
+    INSERT INTO owned_badges
+        (badge_id, user_id)
+    VALUES 
+        (3, a_user_id)
+    ON DUPLICATE KEY
+        UPDATE badge_id = badge_id;
+    END IF;
 END;;
 
 CREATE PROCEDURE get_badge(
@@ -338,8 +348,8 @@ CREATE PROCEDURE show_user_badges(
 )
 BEGIN
     SELECT 
-        b.badge_name AS 'Badge name',
-        b.badge_description AS 'Describtion'
+        b.badge_name AS 'badge_name',
+        b.badge_description AS 'badge_description'
     FROM badges AS b
     JOIN owned_badges AS ob
         ON ob.badge_id = b.badge_id
@@ -454,6 +464,31 @@ BEGIN
 
     END IF;
 END;;
+
+CREATE TRIGGER earn_streak_badges
+AFTER UPDATE 
+ON ongoing_streaks FOR EACH ROW
+BEGIN
+    IF NEW.streak_duration = 7 
+    AND NEW.streak_id = 1 THEN
+        INSERT INTO owned_badges
+            (badge_id, user_id)
+        VALUES 
+            (1, NEW.user_id)
+    ON DUPLICATE KEY
+        UPDATE badge_id = badge_id;
+    ELSEIF NEW.streak_duration = 10
+    AND NEW.streak_id = 2 THEN
+        INSERT INTO owned_badges
+            (badge_id, user_id)
+        VALUES 
+            (2, NEW.user_id)
+    ON DUPLICATE KEY
+        UPDATE badge_id = badge_id;
+    END IF;
+END;; 
+
+
 ---
 --- funtions
 ---

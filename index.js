@@ -63,9 +63,9 @@ const path    = require("path");
 const express = require("express");
 const session = require("express-session");
 const app     = express();
+app.use("/style", express.static(path.join(__dirname, "./views/style")));
 const routeQuestBoard = require("./route/route.js");
 const middleware = require("./middleware/index.js");
-
 app.set("view engine", "ejs");
 
 app.use(middleware.logIncomingToConsole);

@@ -132,10 +132,11 @@ router.get("/profile", ensureLoggedIn, async (req, res) => {
     const profile = await questboard.showUserProfile(user_id);
     const rewards = await questboard.showUserRewards(user_id);
     const streaks = await questboard.showUserStreaks(user_id);
+    const badges = await questboard.showUserBadges(user_id);
     console.log(streaks);
 
     res.render("QuestBoard/profile", {
-        title: "View Profile", profile, rewards, streaks});
+        title: "View Profile", profile, rewards, streaks, badges});
 });
 
 router.get("/add_birthday", ensureLoggedIn, async (req, res) => {
