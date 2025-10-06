@@ -154,6 +154,24 @@ router.post("/add_birthday", ensureLoggedIn, async (req, res) => {
     res.redirect("/QuestBoard/profile");
 });
 
+
+router.get("/update_bio", ensureLoggedIn, async (req, res) => {
+    let data = {
+        title: "Update your bio"
+    };
+
+    res.render("QuestBoard/update_bio", data);
+});
+
+router.post("/update_bio", ensureLoggedIn, async (req, res) => {
+    let { bio } = req.body;
+    let user_id = req.session.userId;
+    await questboard.addBio(user_id, bio);
+
+    res.redirect("/QuestBoard/profile");
+});
+
+
 //
 
 router.get("/add_description", ensureLoggedIn, async (req, res) => {

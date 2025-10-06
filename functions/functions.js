@@ -25,6 +25,7 @@ module.exports = {
     showStore,
     logIn,
     addBirthday,
+    addBio,
     addDescriptionToQuest,
     validateEmail, 
     validatePassword,
@@ -248,6 +249,15 @@ async function addBirthday(user_id, birthday) {
     const db = await mysql.createConnection(config);
 
     await db.query(sql, [user_id, birthday]);
+
+    await db.end();
+}
+
+async function addBio(user_id, bio) {
+    let sql = `CALL add_bio_to_profile(?, ?);`;
+    const db = await mysql.createConnection(config);
+
+    await db.query(sql, [user_id, bio]);
 
     await db.end();
 }

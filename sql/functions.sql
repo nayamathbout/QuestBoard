@@ -4,16 +4,20 @@
 
 DROP PROCEDURE IF EXISTS create_account;
 DROP PROCEDURE IF EXISTS create_profile;
+
 DROP PROCEDURE IF EXISTS create_quest;
+DROP PROCEDURE IF EXISTS delete_quest;
 DROP PROCEDURE IF EXISTS add_description_to_quest;
 DROP PROCEDURE IF EXISTS complete_quest;
 DROP PROCEDURE IF EXISTS get_badge;
-DROP PROCEDURE IF EXISTS update_login_streak;
-DROP PROCEDURE IF EXISTS update_quest_streak;
-DROP PROCEDURE IF EXISTS buy_items;
 DROP PROCEDURE IF EXISTS earn_coins;
 DROP PROCEDURE IF EXISTS earn_xp;
-DROP PROCEDURE IF EXISTS delete_quest;
+
+DROP PROCEDURE IF EXISTS update_login_streak;
+DROP PROCEDURE IF EXISTS update_quest_streak;
+
+DROP PROCEDURE IF EXISTS buy_items;
+
 DROP PROCEDURE IF EXISTS show_quests;
 DROP PROCEDURE IF EXISTS show_completed_quests;
 DROP PROCEDURE IF EXISTS show_upcoming_quests;
@@ -23,11 +27,15 @@ DROP PROCEDURE IF EXISTS show_user_streaks;
 DROP PROCEDURE IF EXISTS show_user_rewards;
 DROP PROCEDURE IF EXISTS show_user_profile;
 DROP PROCEDURE IF EXISTS show_store;
+
 DROP PROCEDURE IF EXISTS add_age_to_profile;
+DROP PROCEDURE IF EXISTS add_bio_to_profile;
+
 DROP TRIGGER IF EXISTS complete_status;
 DROP TRIGGER IF EXISTS earn_streak_badges;
+
 DROP FUNCTION IF EXISTS get_user_id;
-DROP FUNCTION IF EXISTS add_age_to_profile;
+
 DROP EVENT IF EXISTS reset_daily_quests;
 DROP EVENT IF EXISTS reset_weekly_quests;
 DROP EVENT IF EXISTS late_status;
@@ -377,7 +385,9 @@ CREATE PROCEDURE show_user_rewards (
 BEGIN
     SELECT 
         coins,
-        xp
+        xp,
+        user_level,
+        xp_left
     FROM profiles
     WHERE user_id = a_user_id;
 END;
@@ -390,7 +400,7 @@ BEGIN
         p.user_name AS 'user_name',
         DATE_FORMAT(p.user_age, '%Y-%m-%d') AS 'user_birthday',
         i.email AS 'email',
-        i.password_hashed AS 'password_hashed'
+        p.user_bio AS 'user_bio'
     FROM profiles AS p 
     JOIN inlogging AS i 
         ON i.user_id = p.user_id
@@ -414,6 +424,16 @@ CREATE PROCEDURE add_age_to_profile(
 BEGIN
     UPDATE profiles
     SET user_age = a_user_age
+    WHERE user_id = a_user_id;
+END;;
+
+CREATE PROCEDURE add_bio_to_profile(
+    IN a_user_id INT,
+    IN a_user_bio TEXT
+)
+BEGIN
+    UPDATE profiles
+    SET user_bio = a_user_bio
     WHERE user_id = a_user_id;
 END;;
 

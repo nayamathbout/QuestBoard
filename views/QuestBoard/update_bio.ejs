@@ -1,0 +1,13 @@
+<%- include("header", {title: title}); %>
+
+<h1>Update your Bio: </h1>
+
+
+<form method="post" action="/QuestBoard/update_bio" autocomplete="off">
+
+    <label for="bio">Your Bio</label>
+    <input type="text" id="bio" name="bio" required autocomplete="off"><br>
+    <button type="submit">Update</button>
+</form>
+
+<%- include("footer"); %>

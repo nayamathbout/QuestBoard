@@ -27,8 +27,16 @@ CREATE TABLE profiles
     user_id INT NOT NULL,
     user_name VARCHAR(255) NOT NULL,
     user_age DATE,
+    user_bio TEXT DEFAULT 'QuestBoard User',
     coins INT UNSIGNED NOT NULL DEFAULT 0,
     xp INT UNSIGNED NOT NULL DEFAULT 0, 
+    user_level INT AS (FLOOR(xp / 30) + 1) VIRTUAL,
+    xp_left INT AS (
+        CASE 
+        WHEN (xp % 30) = 0 THEN 30
+        ELSE 30 - (xp % 30)
+        END
+    ) VIRTUAL,
 
     PRIMARY KEY(user_id),
     FOREIGN KEY(user_id) REFERENCES inlogging(user_id) ON DELETE CASCADE
