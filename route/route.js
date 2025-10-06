@@ -89,12 +89,11 @@ router.post("/login", async (req, res) => {
 router.get("/dashboard", ensureLoggedIn, async (req, res) => {
     let user_id = req.session.userId;
     const upcomingQuests = await questboard.showUpcomingQuests(user_id);
-    const completedQuests = await questboard.showCompletedQuests(user_id);
     const dailyQuests = await questboard.showDailyQuests(user_id);
     const rewards = await questboard.showUserRewards(user_id);
 
     res.render("QuestBoard/dashboard", {
-        title: "View Profile", upcomingQuests, completedQuests, dailyQuests, rewards});
+        title: "View Profile", upcomingQuests, dailyQuests, rewards});
 });
 
 
@@ -133,10 +132,10 @@ router.get("/profile", ensureLoggedIn, async (req, res) => {
     const rewards = await questboard.showUserRewards(user_id);
     const streaks = await questboard.showUserStreaks(user_id);
     const badges = await questboard.showUserBadges(user_id);
-    console.log(streaks);
+    const completedQuests = await questboard.showCompletedQuests(user_id);
 
     res.render("QuestBoard/profile", {
-        title: "View Profile", profile, rewards, streaks, badges});
+        title: "View Profile", profile, rewards, streaks, badges, completedQuests});
 });
 
 router.get("/add_birthday", ensureLoggedIn, async (req, res) => {

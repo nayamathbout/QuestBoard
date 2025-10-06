@@ -54,29 +54,6 @@
 <% }; %>
 </table>
 
-<p>Completed Quests:</p>
-<table border="1">
-    <tr>
-        <th>Quest name</th>
-        <th>Quest Description</th>
-        <th>Type</th>
-        <th>Completed on</th>
-    </tr>
-<% for (const row of completedQuests) { %>
-    <tr>
-        <td><%= row.quest_name %></td>
-        <td>
-            <% if (!row.quest_description) { %>
-                <ul><li><a href="add_description?quest_id=<%= row.quest_id %>">Add description</a></li></ul>
-            <% } else { %>
-                <%= row.quest_description %>
-            <% } %></td>
-        <td><%= row.quest_type %></td>
-        <td><%= row.completed_time %></td>
-    </tr>
-<% }; %>
-</table>
-
 
 <p>Daily Quests:</p>
 <table border="1">
