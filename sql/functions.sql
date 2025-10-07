@@ -16,17 +16,20 @@ DROP PROCEDURE IF EXISTS earn_xp;
 DROP PROCEDURE IF EXISTS update_login_streak;
 DROP PROCEDURE IF EXISTS update_quest_streak;
 
-DROP PROCEDURE IF EXISTS buy_items;
+DROP PROCEDURE IF EXISTS buy_item;
 
 DROP PROCEDURE IF EXISTS show_quests;
 DROP PROCEDURE IF EXISTS show_completed_quests;
 DROP PROCEDURE IF EXISTS show_upcoming_quests;
 DROP PROCEDURE IF EXISTS show_daily_quests;
+
 DROP PROCEDURE IF EXISTS show_user_badges;
 DROP PROCEDURE IF EXISTS show_user_streaks;
 DROP PROCEDURE IF EXISTS show_user_rewards;
 DROP PROCEDURE IF EXISTS show_user_profile;
+
 DROP PROCEDURE IF EXISTS show_store;
+DROP PROCEDURE IF EXISTS show_owned_items;
 
 DROP PROCEDURE IF EXISTS add_age_to_profile;
 DROP PROCEDURE IF EXISTS add_bio_to_profile;
@@ -35,6 +38,7 @@ DROP TRIGGER IF EXISTS complete_status;
 DROP TRIGGER IF EXISTS earn_streak_badges;
 
 DROP FUNCTION IF EXISTS get_user_id;
+DROP FUNCTION IF EXISTS ensure_buying_successfull;
 
 DROP EVENT IF EXISTS reset_daily_quests;
 DROP EVENT IF EXISTS reset_weekly_quests;
@@ -207,20 +211,22 @@ BEGIN
 END;;
 
 
-CREATE PROCEDURE buy_items(
+CREATE PROCEDURE buy_item(
     IN a_user_id INT,
-    IN a_item_id INT,
-    IN a_quantitie INT,
-    IN a_item_cost INT
+    IN a_item_id INT
 )
 BEGIN
+    DECLARE a_item_cost INT;
+
+    SELECT item_cost INTO a_item_cost
+    FROM store
+    WHERE item_id = a_item_id;
+
     INSERT INTO owned_items
-        (user_id, item_id, quantitie)
+        (user_id, item_id)
     VALUES
-        (a_user_id, a_item_id, a_quantitie)
-    ON DUPLICATE KEY UPDATE 
-        quantitie = quantitie + a_quantitie;
-    
+        (a_user_id, a_item_id);
+
     UPDATE profiles
     SET coins = coins - a_item_cost
     WHERE user_id = a_user_id;
@@ -407,14 +413,35 @@ BEGIN
     WHERE p.user_id = a_user_id;
 END;;
 
+
 CREATE PROCEDURE show_store(
+    IN a_user_id INT
 )
 BEGIN
     SELECT 
-        item_name AS 'Item name', 
-        item_cost AS 'Cost',
-        item_description AS 'Describtion'
-    FROM store;
+        s.item_id AS 'item_id',
+        s.item_name AS 'item_name', 
+        s.item_cost AS 'cost',
+        s.item_description AS 'item_description'
+    FROM store AS s
+    LEFT JOIN owned_items AS o
+        ON o.item_id = s.item_id
+        AND o.user_id = a_user_id
+    WHERE o.item_id IS NULL;
+END;;
+
+CREATE PROCEDURE show_owned_items(
+    IN a_user_id INT
+)
+BEGIN
+    SELECT 
+        s.item_id AS 'item_id',
+        s.item_name AS 'item_name', 
+        s.item_description AS 'item_description'
+    FROM store AS s
+    JOIN owned_items AS o
+        ON o.item_id = s.item_id
+        AND o.user_id = a_user_id;
 END;;
 
 CREATE PROCEDURE add_age_to_profile(
@@ -529,6 +556,29 @@ BEGIN
     AND password_hashed = a_password_hashed;
 
     RETURN a_user_id;
+END;;
+
+CREATE FUNCTION ensure_buying_successfull (
+    IN a_item_id INT,
+    IN a_user_id INT
+)
+RETURNS BOOLEAN
+DETERMINISTIC
+BEGIN 
+    DECLARE a_item_cost INT;
+    DECLARE a_coins INT;
+    DECLARE return_boolean BOOLEAN DEFAULT FALSE;
+
+    SELECT item_cost INTO a_item_cost
+    FROM store
+    WHERE item_id = a_item_id;
+
+    SELECT coins INTO a_coins
+    FROM profiles
+    WHERE user_id = a_user_id;
+
+    SET return_boolean = (a_coins >= a_item_cost);
+    RETURN return_boolean;
 END;;
 
 DELIMITER ;

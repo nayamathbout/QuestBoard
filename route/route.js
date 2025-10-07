@@ -172,6 +172,35 @@ router.post("/update_bio", ensureLoggedIn, async (req, res) => {
 });
 
 
+router.get("/store", ensureLoggedIn, async (req, res) => {
+    let data = { title: "View Store", error: null };
+    let user_id = req.session.userId;
+    const store = await questboard.showStore(user_id);
+
+    if (req.session.flash && req.session.flash.error) {
+        data.error = req.session.flash.error;
+        delete req.session.flash; 
+    }
+
+    res.render("QuestBoard/store", {
+        data, store});
+});
+
+
+router.post("/store", ensureLoggedIn, async (req, res) => {
+    const item_id  = req.body.item_id;
+    let user_id = req.session.userId;
+    const canBuy = await questboard.ensureBuyingSuccessfull(item_id, user_id);
+
+    if (canBuy) {
+        await questboard.buyItem(user_id, item_id);
+        res.redirect("/QuestBoard/store");
+    }
+
+    req.session.flash = { error: "You don't have enough money" };
+    return res.redirect("/QuestBoard/store");
+});
+
 //
 
 router.get("/add_description", ensureLoggedIn, async (req, res) => {

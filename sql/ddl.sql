@@ -116,7 +116,7 @@ CREATE TABLE ongoing_streaks
 
 CREATE TABLE store 
 (
-    item_id INT AUTO_INCREMENT NOT NULL,
+    item_id INT NOT NULL,
     item_name VARCHAR(255) NOT NULL,
     item_cost INT UNSIGNED NOT NULL,
     item_description TEXT,
@@ -129,7 +129,6 @@ CREATE TABLE owned_items
 (
     item_id INT NOT NULL,
     user_id INT NOT NULL,
-    quantitie INT NOT NULL DEFAULT 1,
 
     PRIMARY KEY(item_id, user_id),
     FOREIGN KEY(user_id) REFERENCES inlogging(user_id) ON DELETE CASCADE,

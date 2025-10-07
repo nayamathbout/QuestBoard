@@ -1,0 +1,32 @@
+<%- include("header", {title: data.title}); %>
+
+<h1>QuestBoard Store:</h1>
+
+<p>Shop avatars:</p>
+<table border="1">
+    <tr>
+        <th>Item Name</th>
+        <th>Cost</th>
+        <th>Description</th>
+    </tr>
+<% for (const row of store) { %>
+    <tr>
+        <td><%= row.item_name %></td>
+        </td>
+        <td><%= row.cost %></td>
+        <td><%= row.item_description %></td>
+        <td>
+            <form method="post" action="/QuestBoard/store">
+                <input type="hidden" name="item_id" value="<%= row.item_id %>">
+                <button type="submit">Buy!</button>
+            </form>
+        </td>
+    </tr>
+<% }; %>
+</table>
+
+<% if (data.error) { %>
+    <div class="error"><%= data.error %></div>
+<% } %>
+
+<%- include("footer"); %>

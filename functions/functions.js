@@ -23,6 +23,7 @@ module.exports = {
     showUserRewards,
     showUserProfile,
     showStore,
+    showOwnedItems,
     logIn,
     addBirthday,
     addBio,
@@ -30,7 +31,8 @@ module.exports = {
     validateEmail, 
     validatePassword,
     ensureEmailIsUnique,
-    updateLoginStreak
+    updateLoginStreak,
+    ensureBuyingSuccessfull
 };
 
 
@@ -119,11 +121,11 @@ async function endStreak(user_id, streak_id) {
     await db.end();
 }
 
-async function buyItem(user_id, item_id, quantitie, item_cost) {
-    let sql = `CALL buy_item(?, ?, ?, ?);`;
+async function buyItem(user_id, item_id) {
+    let sql = `CALL buy_item(?, ?);`;
     const db = await mysql.createConnection(config);
 
-    await db.query(sql, [user_id, item_id, quantitie, item_cost]);
+    await db.query(sql, [user_id, item_id]);
 
     await db.end();
 }
@@ -213,16 +215,28 @@ async function showUserProfile(user_id) {
 }
 
 
-async function showStore() {
-    let sql = `CALL show_store();`;
+async function showStore(user_id) {
+    let sql = `CALL show_store(?);`;
     const db = await mysql.createConnection(config);
 
-    let res = await db.query(sql);
+    const [result] = await db.query(sql, [user_id]);
     await db.end();
 
-    return res[0];
+    const rows = Array.isArray(result) ? result : [];
+
+    return rows;
 }
 
+async function showOwnedItems(user_id) {
+    let sql = `CALL show_owned_items(?);`;
+    const db = await mysql.createConnection(config);
+
+    const [result] = await db.query(sql, [user_id]);
+    await db.end();
+
+    const rows = Array.isArray(result) ? result : [];
+    return rows;
+}
 
 async function logIn(email, password) {
     let sql = `SELECT user_id, password_hashed FROM inlogging WHERE email = ?;`;
@@ -300,4 +314,15 @@ async function updateLoginStreak(user_id) {
     await db.query(sql, [user_id]);
 
     await db.end();
+}
+
+async function ensureBuyingSuccessfull(item_id, user_id) {
+    let sql = `SELECT ensure_buying_successfull(?, ?) AS result;`;
+    const db = await mysql.createConnection(config);
+
+    const [rows] = await db.query(sql, [item_id, user_id]);
+    await db.end();
+
+    const validate = Array.isArray(rows) ? rows[0]?.result : rows.result;
+    return validate === 1;
 }
