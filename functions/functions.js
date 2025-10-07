@@ -32,7 +32,8 @@ module.exports = {
     validatePassword,
     ensureEmailIsUnique,
     updateLoginStreak,
-    ensureBuyingSuccessfull
+    ensureBuyingSuccessfull,
+    changeAvatar
 };
 
 
@@ -325,4 +326,14 @@ async function ensureBuyingSuccessfull(item_id, user_id) {
 
     const validate = Array.isArray(rows) ? rows[0]?.result : rows.result;
     return validate === 1;
+}
+
+
+async function changeAvatar(user_id, avatar) {
+    let sql = `CALL change_avatar(?, ?);`;
+    const db = await mysql.createConnection(config);
+
+    await db.query(sql, [user_id, avatar]);
+
+    await db.end();
 }

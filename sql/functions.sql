@@ -33,6 +33,7 @@ DROP PROCEDURE IF EXISTS show_owned_items;
 
 DROP PROCEDURE IF EXISTS add_age_to_profile;
 DROP PROCEDURE IF EXISTS add_bio_to_profile;
+DROP PROCEDURE IF EXISTS change_avatar;
 
 DROP TRIGGER IF EXISTS complete_status;
 DROP TRIGGER IF EXISTS earn_streak_badges;
@@ -72,6 +73,11 @@ BEGIN
     VALUES
         (1, a_user_id),
         (2, a_user_id);
+
+    INSERT INTO owned_items
+        (item_id, user_id)
+    VALUES
+        (0, a_user_id);
 END;;
 
 CREATE PROCEDURE create_quest(
@@ -406,7 +412,8 @@ BEGIN
         p.user_name AS 'user_name',
         DATE_FORMAT(p.user_age, '%Y-%m-%d') AS 'user_birthday',
         i.email AS 'email',
-        p.user_bio AS 'user_bio'
+        p.user_bio AS 'user_bio',
+        p.avatar AS 'user_avatar'
     FROM profiles AS p 
     JOIN inlogging AS i 
         ON i.user_id = p.user_id
@@ -461,6 +468,16 @@ CREATE PROCEDURE add_bio_to_profile(
 BEGIN
     UPDATE profiles
     SET user_bio = a_user_bio
+    WHERE user_id = a_user_id;
+END;;
+
+CREATE PROCEDURE change_avatar(
+    IN a_user_id INT,
+    IN a_avatar INT
+)
+BEGIN 
+    UPDATE profiles
+    SET avatar = a_avatar
     WHERE user_id = a_user_id;
 END;;
 

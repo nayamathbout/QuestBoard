@@ -132,10 +132,11 @@ router.get("/profile", ensureLoggedIn, async (req, res) => {
     const rewards = await questboard.showUserRewards(user_id);
     const streaks = await questboard.showUserStreaks(user_id);
     const badges = await questboard.showUserBadges(user_id);
+    const ownedItems = await questboard.showOwnedItems(user_id);
     const completedQuests = await questboard.showCompletedQuests(user_id);
 
     res.render("QuestBoard/profile", {
-        title: "View Profile", profile, rewards, streaks, badges, completedQuests});
+        title: "View Profile", profile, rewards, streaks, badges, completedQuests, ownedItems});
 });
 
 router.get("/add_birthday", ensureLoggedIn, async (req, res) => {
@@ -201,8 +202,6 @@ router.post("/store", ensureLoggedIn, async (req, res) => {
     return res.redirect("/QuestBoard/store");
 });
 
-//
-
 router.get("/add_description", ensureLoggedIn, async (req, res) => {
     const quest_id = req.query.quest_id;
     let data = {
@@ -225,6 +224,24 @@ router.get("/delete_quest", ensureLoggedIn, async (req, res) => {
     const quest_id = req.query.quest_id;
     await questboard.deleteQuest(quest_id);
         res.redirect("/QuestBoard/dashboard");
+});
+
+
+router.get("/change_avatar", ensureLoggedIn, async (req, res) => {
+    let user_id = req.session.userId;
+
+    const ownedItems = await questboard.showOwnedItems(user_id);
+
+    res.render("QuestBoard/change_avatar", {
+        title: "Change your Avatar", ownedItems});
+});
+
+router.post("/change_avatar", ensureLoggedIn, async (req, res) => {
+    let { item_id } = req.body;
+    let user_id = req.session.userId;
+    await questboard.changeAvatar(user_id, item_id);
+
+    res.redirect("/QuestBoard/profile");
 });
 
 router.get("/logout", (req, res) => {

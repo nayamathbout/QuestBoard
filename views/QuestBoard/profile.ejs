@@ -6,6 +6,9 @@
 
 <table border="1">
 <tr>
+    <td><img src="/style/img/avatars/<%= profile.user_avatar %>.png" width="100"></td>
+</tr>
+<tr>
     <th>Name:</th><td><%= profile?.user_name %></td>
 </tr>
 <tr>
@@ -26,6 +29,7 @@
 </tr>
 </table>
 <a href="update_bio">Update your Bio</a>
+<a href="change_avatar">Change your Avatar</a>
 
 <p>Your Rewards:</p>
 
@@ -100,5 +104,24 @@
     </tr>
 <% }; %>
 </table>
+
+
+<p>Owned avatars:</p>
+<table border="1">
+    <tr>
+        <th>Item</th>
+        <th>Item Name</th>
+        <th>Description</th>
+    </tr>
+<% for (const row of ownedItems) { %>
+    <tr>
+        <td><img src="/style/img/avatars/<%= row.item_id %>.png" width="100"></td>
+        <td><%= row.item_name %></td>
+        </td>
+        <td><%= row.item_description %></td>
+    </tr>
+<% }; %>
+</table>
+
 
 <%- include("footer"); %>

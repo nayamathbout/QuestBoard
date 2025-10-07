@@ -37,6 +37,7 @@ CREATE TABLE profiles
         ELSE 30 - (xp % 30)
         END
     ) VIRTUAL,
+    avatar INT DEFAULT 0,
 
     PRIMARY KEY(user_id),
     FOREIGN KEY(user_id) REFERENCES inlogging(user_id) ON DELETE CASCADE

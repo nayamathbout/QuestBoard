@@ -21,6 +21,7 @@ VALUES
 INSERT INTO store
     (item_id, item_name, item_cost, item_description)
 VALUES
+    (0, 'Coffee Avatar', 0, 'Coffee (no avatar) AI generated avatar'),
     (1, 'Kitty Avatar', 150, 'Hello kitty inspired AI generated avatar'),
     (2, 'Sponge Avatar', 150, 'SpongeBob inspired AI generated avatar'),
     (3, 'Teddy Avatar', 150, 'Whinnie The Poo inspiered AI generated avatar'),
