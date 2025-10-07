@@ -33,7 +33,8 @@ module.exports = {
     ensureEmailIsUnique,
     updateLoginStreak,
     ensureBuyingSuccessfull,
-    changeAvatar
+    changeAvatar,
+    getUserAvatar
 };
 
 
@@ -336,4 +337,18 @@ async function changeAvatar(user_id, avatar) {
     await db.query(sql, [user_id, avatar]);
 
     await db.end();
+}
+
+async function getUserAvatar(user_id) {
+    let sql = `SELECT get_user_avatar(?) AS avatar;`;
+
+    const db = await mysql.createConnection(config);
+    const [result] = await db.query(sql, [user_id]);
+    const row = Array.isArray(result) ? result[0] : result;
+
+    let avatarId = row.avatar;
+
+
+    await db.end();
+    return avatarId;
 }

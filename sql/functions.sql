@@ -40,6 +40,7 @@ DROP TRIGGER IF EXISTS earn_streak_badges;
 
 DROP FUNCTION IF EXISTS get_user_id;
 DROP FUNCTION IF EXISTS ensure_buying_successfull;
+DROP FUNCTION IF EXISTS get_user_avatar; 
 
 DROP EVENT IF EXISTS reset_daily_quests;
 DROP EVENT IF EXISTS reset_weekly_quests;
@@ -596,6 +597,21 @@ BEGIN
 
     SET return_boolean = (a_coins >= a_item_cost);
     RETURN return_boolean;
+END;;
+
+CREATE FUNCTION get_user_avatar (
+    IN a_user_id INT
+)
+RETURNS INT 
+DETERMINISTIC
+BEGIN
+    DECLARE a_avatar INT ;
+
+    SELECT avatar INTO a_avatar
+    FROM profiles
+    WHERE user_id = a_user_id;
+
+    RETURN a_avatar;
 END;;
 
 DELIMITER ;

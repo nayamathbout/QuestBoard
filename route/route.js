@@ -91,9 +91,10 @@ router.get("/dashboard", ensureLoggedIn, async (req, res) => {
     const upcomingQuests = await questboard.showUpcomingQuests(user_id);
     const dailyQuests = await questboard.showDailyQuests(user_id);
     const rewards = await questboard.showUserRewards(user_id);
+    const avatar = await questboard.getUserAvatar(user_id);
 
     res.render("QuestBoard/dashboard", {
-        title: "View Profile", upcomingQuests, dailyQuests, rewards});
+        title: "View Profile", upcomingQuests, dailyQuests, rewards, avatar});
 });
 
 
