@@ -14,9 +14,9 @@ VALUES
 INSERT INTO badges
     (badge_id, badge_name, badge_description)
 VALUES 
-    (1, '7 Days Streak Badge', 'You have completed a 7 days streak!'),
-    (2, '10 Quests Badge', 'You have completed 10 quests!'),
-    (3, 'Weekly Quest Badge', 'You have completed a weekly quest!');
+    (1, '4 Quests Badge', 'You have completed quests'),
+    (2, '4 Daily Quests Badge', 'You have completed 4 daily quests!'),
+    (3, '4 Weekly Quest Badge', 'You have completed 4 weekly quests!');
 
 INSERT INTO store
     (item_id, item_name, item_cost, item_description)

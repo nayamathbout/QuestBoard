@@ -10,7 +10,7 @@ module.exports = {
     createQuest,
     completeQuest,
     deleteQuest,
-    giveBadge,
+    // giveBadge,
     startStreak,
     endStreak,
     buyItem, 
@@ -95,14 +95,14 @@ async function deleteQuest(quest_id) {
     await db.end();
 }
 
-async function giveBadge(user_id, badge_id) {
+/* async function giveBadge(user_id, badge_id) {
     let sql = `CALL give_badge(?, ?);`;
     const db = await mysql.createConnection(config);
 
     await db.query(sql, [user_id, badge_id]);
 
     await db.end();
-}
+} */
 
 async function startStreak(user_id, streak_id) {
     let sql = `CALL start_streak(?, ?);`;

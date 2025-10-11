@@ -36,7 +36,7 @@ DROP PROCEDURE IF EXISTS add_bio_to_profile;
 DROP PROCEDURE IF EXISTS change_avatar;
 
 DROP TRIGGER IF EXISTS complete_status;
-DROP TRIGGER IF EXISTS earn_streak_badges;
+DROP TRIGGER IF EXISTS earn_badges;
 
 DROP FUNCTION IF EXISTS get_user_id;
 DROP FUNCTION IF EXISTS ensure_buying_successfull;
@@ -152,16 +152,16 @@ BEGIN
     VALUES
         (a_quest_id, a_user_id, a_quest_name, a_quest_description, a_quest_type, CURDATE());
 
-    IF a_quest_type = 'weekly' THEN
+    /* IF a_quest_type = 'weekly' THEN
     INSERT INTO owned_badges
         (badge_id, user_id)
     VALUES 
         (3, a_user_id)
     ON DUPLICATE KEY
         UPDATE badge_id = badge_id;
-    END IF;
+    END IF; */
 END;;
-
+/* 
 CREATE PROCEDURE get_badge(
     IN a_user_id INT,
     IN a_badge_id INT
@@ -172,7 +172,7 @@ BEGIN
     VALUES
         (a_user_id, a_badge_id);
 END;;
-
+ */
 CREATE PROCEDURE update_login_streak(
     IN a_user_id INT
 )
@@ -529,7 +529,7 @@ BEGIN
 
     END IF;
 END;;
-
+/* 
 CREATE TRIGGER earn_streak_badges
 AFTER UPDATE 
 ON ongoing_streaks FOR EACH ROW
@@ -551,7 +551,58 @@ BEGIN
     ON DUPLICATE KEY
         UPDATE badge_id = badge_id;
     END IF;
-END;; 
+END;;  */
+
+CREATE TRIGGER earn_badges 
+AFTER INSERT 
+ON completed_quests FOR EACH ROW
+BEGIN 
+    DECLARE count_quests INT;
+    DECLARE count_weekly_quests INT;
+    DECLARE count_daily_quests INT;
+
+    SELECT COUNT(*) INTO count_quests
+    FROM completed_quests
+    WHERE user_id = NEW.user_id;
+
+    SELECT COUNT(*) INTO count_daily_quests
+    FROM completed_quests
+    WHERE quest_type = 'daily'
+    AND user_id = NEW.user_id;
+
+    SELECT COUNT(*) INTO count_weekly_quests
+    FROM completed_quests
+    WHERE quest_type = 'weekly'
+    AND user_id = NEW.user_id;
+
+    IF count_quests >= 4 THEN
+        INSERT INTO owned_badges
+            (badge_id, user_id)
+        VALUES 
+            (1, NEW.user_id)
+    ON DUPLICATE KEY
+        UPDATE badge_id = badge_id;
+    END IF;
+
+    IF count_daily_quests >= 4 THEN
+        INSERT INTO owned_badges
+            (badge_id, user_id)
+        VALUES 
+            (2, NEW.user_id)
+    ON DUPLICATE KEY
+        UPDATE badge_id = badge_id;
+    END IF;
+
+    IF count_weekly_quests >= 4 THEN
+        INSERT INTO owned_badges
+            (badge_id, user_id)
+        VALUES 
+            (3, NEW.user_id)
+    ON DUPLICATE KEY
+        UPDATE badge_id = badge_id;
+    END IF;
+END;;
+
 
 
 ---
