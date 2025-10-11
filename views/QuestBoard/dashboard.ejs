@@ -5,7 +5,7 @@
 <p>What do you wanna do today?</p>
 
 <ul><li><a href="quest">Create a quest</a></li></ul>
-<ul><li><a href="profile"><img src="/style/img/avatars/<%= avatar %>.png" width="100">View Profile</a></li></ul>
+<ul><li><a href="profile"><img src="/style/img/avatars/<%= avatar %>.png" width="100"></a></li></ul>
 
 
 <p>Your Rewards:</p>
@@ -23,6 +23,16 @@
     <th>XP left for next level:</th><td><%= rewards?.xp_left %></td>
 </tr>
 </table>
+
+<% for (const row of badges) { %>
+    <% if (row.badge_name === '7 Days Streak Badge') { %>
+        <img src="/style/img/badgeone.png" width="50">
+    <% } else if (row.badge_name === '10 Quests Badge') { %>
+        <img src="/style/img/badgetwo.png" width="50">
+    <% } else if (row.badge_name === 'Weekly Quest Badge') { %>
+        <img src="/style/img/badgethree.png" width="50">
+    <% } %>
+<% }; %>
 
 <p>Upcoming Quests:</p>
 <table border="1">

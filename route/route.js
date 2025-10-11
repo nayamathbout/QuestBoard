@@ -17,6 +17,10 @@ function ensureLoggedIn(req, res, next) {
     return res.redirect("QuestBoard/login");
 }
 
+router.get("/", async (req, res) => {
+    res.redirect("QuestBoard/login");
+});
+
 router.get("/signup", async (req, res) => {
     let data = {
         title: "Sign up",
@@ -61,6 +65,15 @@ router.get("/account_created", async (req, res) => {
     res.render("QuestBoard/account_created", data);
 });
 
+
+router.get("/info", ensureLoggedIn, async (req, res) => {
+    let data = {
+        title: "Information"
+    };
+
+    res.render("QuestBoard/info", data);
+});
+
 router.get("/login", async (req, res) => {
     let data = { title: "Log In", error: null };
 
@@ -92,9 +105,10 @@ router.get("/dashboard", ensureLoggedIn, async (req, res) => {
     const dailyQuests = await questboard.showDailyQuests(user_id);
     const rewards = await questboard.showUserRewards(user_id);
     const avatar = await questboard.getUserAvatar(user_id);
+    const badges = await questboard.showUserBadges(user_id);
 
     res.render("QuestBoard/dashboard", {
-        title: "View Profile", upcomingQuests, dailyQuests, rewards, avatar});
+        title: "View Profile", upcomingQuests, dailyQuests, rewards, avatar, badges});
 });
 
 
@@ -178,6 +192,7 @@ router.get("/store", ensureLoggedIn, async (req, res) => {
     let data = { title: "View Store", error: null };
     let user_id = req.session.userId;
     const store = await questboard.showStore(user_id);
+    const rewards = await questboard.showUserRewards(user_id)
 
     if (req.session.flash && req.session.flash.error) {
         data.error = req.session.flash.error;
@@ -185,7 +200,7 @@ router.get("/store", ensureLoggedIn, async (req, res) => {
     }
 
     res.render("QuestBoard/store", {
-        data, store});
+        data, store, rewards});
 });
 
 
@@ -197,10 +212,10 @@ router.post("/store", ensureLoggedIn, async (req, res) => {
     if (canBuy) {
         await questboard.buyItem(user_id, item_id);
         res.redirect("/QuestBoard/store");
+    } else {
+        req.session.flash = { error: "You don't have enough money" };
+        return res.redirect("/QuestBoard/store");
     }
-
-    req.session.flash = { error: "You don't have enough money" };
-    return res.redirect("/QuestBoard/store");
 });
 
 router.get("/add_description", ensureLoggedIn, async (req, res) => {

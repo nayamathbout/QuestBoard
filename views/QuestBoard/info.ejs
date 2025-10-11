@@ -1,0 +1,69 @@
+<%- include("header", {title: title}); %>
+
+<h1>Information and Logic of QuestBoard</h1>
+
+<p>Profile:</p>
+<ul>
+    <li>Each user signs up with an email and a password.</li>
+    <li>Passwords are hash stored in our data-base.</li>
+    <li>Users can add their birthday and a bio later.</li>
+    <li>Users can change their avatar picture and bio.</li>
+</ul>
+
+<p>Quests:</p>
+<ul> 
+    <li>Quests are create with mandatory name & due date.</li>
+    <li>Quest descriptions are optional and can be added in afterhand.</li>
+    <li>Quests can be delated. Completed quests can still be visible.</li>
+    <li>Daily:<br>
+        Daily quests are quests that reoccure daily, you have until midnight to finish them.
+        You earn 50 in game coins & 5 XPs when you complete them. Missing a daily quest may
+        result downgrade in your avarage preformance rate. <br></li>
+    <li>Weekly:<br>
+        Weekly quests are quests that reoccure weekly, you have until midnight next week to
+        finish them. You earn 100 in game coins & 10 XPs when you complete them. Missing a weekly quest
+        may result downgrade in your avarage preformance. Completing a weekly quest before the
+        due date results upgrade in your avarage preformance. Completing a weekly quests gives 
+        you a badge.<br></li>
+    <li>One-time:<br>
+        One-time quests are quests that don't reoccure and can only be completed once. You 
+        manually choose the due date. You earn 200 in game coins & 20 XPs when you complete them.
+        Missing the due date or completing the one-time quests late results a downgrade in your 
+        avarage preformance. Completing one-time quests earlier than the due date results an upgrade
+        in your weekly preformance.</li>
+</ul>
+
+<p>Rewards:</p>
+<ul>
+    <li>Coins:<br>
+        In game coins can be earned by completing quests. Daily quests give you 50, Weekly quests
+        give you 100 & one-time quests give you 200. In game coins can be used to buy avatars.<br></li>
+    <li>XPs:<br>
+        XPs or experience points can be earned by completing quests. Daily quests give you 5, Weekly quests
+        give you 10 & one-time quests give you 20. XPs help you level up.<br></li>
+    <li>Badges:<br>
+        There are three types of badges: Weekly badge that can be earned by completing a weekly quest, 
+        login badge that can be earned by logging in 7 days in a row and quest completion badge that can be 
+        earned by completing 10 quests on time in a row.<br></li>
+    <li>Streaks:<br>
+        There are two types of streaks: Login streak that can be earned by logging in daily & quest completion
+        streak that can be earned by completing quests on time in a row. Not loggint in for a day results 
+        losing the login streak & missing or completing a task late results losing the quest completion streak. </li>
+</ul>
+
+<p>Levels:</p>
+<ul>
+    <li>Levels are based off on XPs.</li>
+    <li>Each player starts at level 1.</li>
+    <li>It takes 30 XPs to reach the next level.</li>
+    <li>You can't level down when you reach a new level.</li>
+</ul>
+
+<p>Avatars:</p>
+<ul>
+    <li>Each player have a no-avatar avatar.</li>
+    <li>You can buy new avatars from the store.</li>
+    <li>Each avatar costs 150 coins.</li>
+</ul>
+
+<%- include("footer"); %>
