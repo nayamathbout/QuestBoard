@@ -54,6 +54,13 @@
         <td><%= row.streak_name %></td>
         <td><%= row.streak_description %></td>
         <td><%= row.streak_duration %></td>
+        <td>
+            <% if (row.streak_name === 'Log in streak') { %>
+                <img src="/style/img/streakone.png" width="50">
+            <% } else if (row.streak_name === 'Quest completion streak') { %>
+                <img src="/style/img/streaktwo.png" width="50">
+            <% } %>
+        </td>
     </tr>
 <% }; %>
 </table>

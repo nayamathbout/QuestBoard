@@ -26,13 +26,24 @@
 
 <% for (const row of badges) { %>
     <% if (row.badge_name === '4 Quests Badge') { %>
-        <img src="/style/img/badgeone.png" width="50">
+        <img src="/style/img/badgeone.png" width="150">
     <% } else if (row.badge_name === '4 Daily Quests Badge') { %>
-        <img src="/style/img/badgetwo.png" width="50">
+        <img src="/style/img/badgetwo.png" width="150">
     <% } else if (row.badge_name === '4 Weekly Quest Badge') { %>
-        <img src="/style/img/badgethree.png" width="50">
+        <img src="/style/img/badgethree.png" width="150">
     <% } %>
 <% }; %>
+
+
+<% for (const row of streaks) { %>
+    <%= row.streak_duration %></td>
+    <% if (row.streak_name === 'Log in streak') { %>
+        <img src="/style/img/streakone.png" width="150">
+    <% } else if (row.streak_name === 'Quest completion streak') { %>
+        <img src="/style/img/streaktwo.png" width="150">
+    <% } %>
+<% }; %>
+
 
 <p>Upcoming Quests:</p>
 <table border="1">

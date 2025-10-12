@@ -16,7 +16,7 @@ INSERT INTO badges
 VALUES 
     (1, '4 Quests Badge', 'You have completed quests'),
     (2, '4 Daily Quests Badge', 'You have completed 4 daily quests!'),
-    (3, '4 Weekly Quest Badge', 'You have completed 4 weekly quests!');
+    (3, '4 Weekly Quests Badge', 'You have completed 4 weekly quests!');
 
 INSERT INTO store
     (item_id, item_name, item_cost, item_description)
