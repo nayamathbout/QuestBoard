@@ -73,6 +73,9 @@
             <ul><li><a href="delete_quest?quest_id=<%= row.quest_id %>">Delete</a></li></ul>
         </td>
         <td>
+            <ul><li><a href="edit_quest?quest_id=<%= row.quest_id %>">Edit</a></li></ul>
+        </td>
+        <td>
             <form method="post" action="/QuestBoard/dashboard">
                 <input type="hidden" name="quest_id" value="<%= row.quest_id %>">
                 <button type="submit">Complete!</button>
@@ -102,6 +105,9 @@
         <td><%= row.quest_status %></td>
         <td>
             <ul><li><a href="delete_quest?quest_id=<%= row.quest_id %>">Delete</a></li></ul>
+        </td>
+        <td>
+            <ul><li><a href="edit_quest?quest_id=<%= row.quest_id %>">Edit</a></li></ul>
         </td>
     </tr>
 <% }; %>

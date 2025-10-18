@@ -1,0 +1,22 @@
+<%- include("header", {title: title}); %>
+
+<h1>Edit selected quest:</h1>
+
+<table border="1">
+<input type="hidden" name="quest_id" value="<%= selected_quest?.quest_id %>">
+<tr>
+    <th>Quest name:</th><td><%= selected_quest?.quest_name %></td>
+</tr>
+<tr>
+    <th>Description:</th><td><%= selected_quest?.quest_description %></td>
+</tr>
+<tr>
+    <th>Type:</th><td><%= selected_quest?.quest_type %></td>
+</tr>
+</table>
+
+<a href="edit_quest_name?quest_id=<%= selected_quest.quest_id %>">Edit name</a>
+<a href="edit_quest_description?quest_id=<%= selected_quest.quest_id %>">Edit description</a>
+<a href="edit_quest_type?quest_id=<%= selected_quest.quest_id %>">Edit type</a>
+
+<%- include("footer"); %>

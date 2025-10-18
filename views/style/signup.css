@@ -1,0 +1,122 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+
+    background-image: url("/style/img/login.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+@media (max-width: 768px) {
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        background-image: url('/style/img/loginmedia.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+}
+
+h1 {
+    color: #834d82;
+    font-size: 3rem;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: bold;
+    text-shadow: 0.15rem 0.15rem 0.4rem rgba(250, 145, 201, 0.782);
+    position: absolute;
+    top: 15vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}
+
+form {
+    width: 300px;
+    margin: 10vh auto;          
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: #bd8afb57;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 37vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    gap: 0.5rem;
+}
+
+label {
+    color: #834d82;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+input {
+    padding: 0.6rem;
+    border: 2px solid #c588cb;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.2s;
+    background-color: #f5b5e3af;
+}
+
+.view-button {
+    background-color: #d4acd4d4;
+    color: #1a011395;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.7rem;
+    font-size: 0.7rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    position: absolute;
+    right: 0.3rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.view-button:hover {
+    background-color: #a26ca3c6;
+}
+
+input:focus {
+    border-color: #834d82;
+    box-shadow: 0 0 0.3rem rgba(131, 77, 130, 0.4);
+}
+
+.signup-button {
+    background-color: #834d82;
+    color: #1a011395;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.7rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.signup-button:hover {
+    background-color: #a26ca3c6;
+}
+
+
+p1 {
+    color: #522d6f;
+    margin-bottom: 0.3rem;
+    font-size: 1.12rem;
+    position: absolute;
+    top: 30%;
+    left: 1.5%;
+    text-shadow: #000000a4;
+}
+

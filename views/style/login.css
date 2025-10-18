@@ -1,0 +1,130 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+
+    background-image: url("/style/img/login.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+@media (max-width: 768px) {
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        background-image: url('/style/img/loginmedia.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+}
+
+h1 {
+    color: #834d82;
+    font-size: 3rem;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: bold;
+    text-shadow: 0.15rem 0.15rem 0.4rem rgba(250, 145, 201, 0.782);
+    position: absolute;
+    top: 15vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}
+
+h2 {
+    color: #1a011395;
+    font-size: 2rem;
+    text-decoration: none;
+    margin: 0 0 1rem 0;
+    font-weight: bold;
+    text-shadow: 0.15rem 0.15rem 0.4rem rgba(250, 145, 201, 0.782);
+}
+
+form {
+    width: 300px;
+    margin: 10vh auto;          
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: #bd8afb57;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 37vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    gap: 0.5rem;
+}
+
+label {
+    color: #834d82;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+input {
+    padding: 0.6rem;
+    border: 2px solid #c588cb;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.2s;
+    background-color: #f5b5e3af;
+}
+
+input:focus {
+    border-color: #834d82;
+    box-shadow: 0 0 0.3rem rgba(131, 77, 130, 0.4);
+}
+
+button {
+    background-color: #834d82;
+    color: #1a011395;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.7rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #a26ca3c6;
+}
+
+p1 {
+    color: #834d82;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+    position: absolute;
+    left: 50%;
+    top: 77vh;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+        text-shadow: 0.15rem 0.15rem 0.4rem rgba(250, 145, 201, 0.782);
+}
+
+.signup-link{
+    background-color: #834d82;
+    color: #1a011395;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.7rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 1.5rem;
+    border: 2px solid #c588cb;
+    text-decoration: none;
+}
+
+.signup-link:hover {
+    background-color: #a26ca3c6;
+}

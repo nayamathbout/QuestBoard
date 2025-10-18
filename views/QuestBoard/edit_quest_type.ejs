@@ -1,0 +1,49 @@
+<%- include("header", {title: title}); %>
+
+<h1>Add description to your quest: </h1>
+
+
+<form method="post" action="/QuestBoard/edit_quest_type" autocomplete="off">
+    <input type="hidden" name="quest_id" value="<%= quest_id %>">
+
+    <label for="quest_type">Type: </label>
+    <select id="quest_type" name="quest_type" required>
+        <option value="" disabled selected>Select type</option>
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="other">One time quest</option>
+    </select><br>
+
+    <div id="due_date_container" style="display:none; margin-top:10px;">
+    <label for="due_date">Due date:</label>
+    <input type="date" id="due_date" name="due_date" required autocomplete="off">
+    </div>
+
+    <button type="submit">Edit</button>
+</form>
+
+
+<script>
+    const questTypeSelect = document.getElementById('quest_type');
+    const dueDateContainer = document.getElementById('due_date_container');
+    const dueDateInput = document.getElementById('due_date');
+
+    const today = new Date().toISOString().split("T")[0];
+    dueDateInput.min = today;
+
+    function toggleDue() {
+        if (questTypeSelect.value === 'other') {
+            dueDateContainer.style.display = 'block';
+            dueDateInput.disabled = false;
+        } else {
+            dueDateContainer.style.display = 'none';
+            dueDateInput.value = '';
+            dueDateInput.disabled = true;
+        }
+    }
+
+    questTypeSelect.addEventListener('change', toggleDue);
+</script>
+
+
+<%- include("footer"); %>

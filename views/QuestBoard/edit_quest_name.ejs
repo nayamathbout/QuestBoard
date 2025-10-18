@@ -1,0 +1,14 @@
+<%- include("header", {title: title}); %>
+
+<h1>Add quest's name: </h1>
+
+
+<form method="post" action="/QuestBoard/edit_quest_name" autocomplete="off">
+    <input type="hidden" name="quest_id" value="<%= quest_id %>">
+
+    <label for="quest_name">Quest's name:</label>
+    <input type="text" id="quest_name" name="quest_name" required autocomplete="off"><br>
+    <button type="submit">Edit</button>
+</form>
+
+<%- include("footer"); %>

@@ -237,6 +237,71 @@ router.post("/add_description", ensureLoggedIn, async (req, res) => {
 });
 
 
+router.get("/edit_quest", ensureLoggedIn, async (req, res) => {
+    const quest_id = req.query.quest_id;
+    const selected_quest = await questboard.showSelectedQuest(quest_id);
+
+    res.render("QuestBoard/edit_quest", {
+        title: "Edit quest", selected_quest});
+
+});
+
+
+router.get("/edit_quest_name", ensureLoggedIn, async (req, res) => {
+    const quest_id = req.query.quest_id;
+    let data = {
+        title: "Edit name",
+        quest_id
+    };
+
+    res.render("QuestBoard/edit_quest_name", data);
+});
+
+router.post("/edit_quest_name", ensureLoggedIn, async (req, res) => {
+    let { quest_id, quest_name } = req.body;
+    await questboard.editQuestName(quest_id, quest_name);
+
+    res.redirect("/QuestBoard/dashboard");
+});
+
+
+router.get("/edit_quest_description", ensureLoggedIn, async (req, res) => {
+    const quest_id = req.query.quest_id;
+    let data = {
+        title: "Edit description",
+        quest_id
+    };
+
+    res.render("QuestBoard/edit_quest_description", data);
+});
+
+router.post("/edit_quest_description", ensureLoggedIn, async (req, res) => {
+    let { quest_id, quest_description } = req.body;
+    await questboard.addDescriptionToQuest(quest_id, quest_description);
+
+    res.redirect("/QuestBoard/dashboard");
+});
+
+
+router.get("/edit_quest_type", ensureLoggedIn, async (req, res) => {
+    const quest_id = req.query.quest_id;
+    let data = {
+        title: "Edit type",
+        quest_id
+    };
+
+    res.render("QuestBoard/edit_quest_type", data);
+});
+
+router.post("/edit_quest_type", ensureLoggedIn, async (req, res) => {
+    let { quest_id, quest_type, due_date } = req.body;
+    const newDue = due_date && due_date.trim() !== '' ? due_date : null;
+    await questboard.editQuestType(quest_id, quest_type, newDue);
+
+    res.redirect("/QuestBoard/dashboard");
+});
+
+
 router.get("/delete_quest", ensureLoggedIn, async (req, res) => {
     const quest_id = req.query.quest_id;
     await questboard.deleteQuest(quest_id);

@@ -1,5 +1,11 @@
 <%- include("header2", {title: title}); %>
 
+<head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/style/signup.css">
+</head>
+
+
 <h1>Create an account</h1>
 
 
@@ -13,21 +19,22 @@
     <label for="password">Password</label>
     <div style="position: relative; display: inline-block;">
         <input type="password" id="password" name="password" required autocomplete="new-password">
-        <button type="button" onclick="togglePassword()">
+        <button type="button" class="view-button" onclick="togglePassword()">
             View
         </button>
     </div><br>
 
-    <button type="submit">Create Account</button>
+    <button type="submit" class="signup-button">Create Account</button>
 </form>
 
-<p>Email must be unique & password must contain at least:</p>
+<p1>Email must be unique <br> & password must contain at least:</p1>
     <ul> 
         <li>one lowercase letter</li>
         <li>one uppercase letter</li>
         <li>one digit (? = . * /)</li>
         <li>8 characters</li>
     </ul>
+</p1>
 
 <% if (error) { %>
     <div class="error"><%= error %></div>

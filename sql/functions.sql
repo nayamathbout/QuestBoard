@@ -35,6 +35,10 @@ DROP PROCEDURE IF EXISTS add_age_to_profile;
 DROP PROCEDURE IF EXISTS add_bio_to_profile;
 DROP PROCEDURE IF EXISTS change_avatar;
 
+DROP PROCEDURE IF EXISTS edit_quest_name;
+DROP PROCEDURE IF EXISTS edit_quest_type;
+DROP PROCEDURE IF EXISTS show_selected_quest;
+
 DROP TRIGGER IF EXISTS complete_status;
 DROP TRIGGER IF EXISTS earn_badges;
 
@@ -151,28 +155,8 @@ BEGIN
         (quest_id, user_id, quest_name, quest_description, quest_type, completed_time)
     VALUES
         (a_quest_id, a_user_id, a_quest_name, a_quest_description, a_quest_type, CURDATE());
+END;;
 
-    /* IF a_quest_type = 'weekly' THEN
-    INSERT INTO owned_badges
-        (badge_id, user_id)
-    VALUES 
-        (3, a_user_id)
-    ON DUPLICATE KEY
-        UPDATE badge_id = badge_id;
-    END IF; */
-END;;
-/* 
-CREATE PROCEDURE get_badge(
-    IN a_user_id INT,
-    IN a_badge_id INT
-)
-BEGIN
-    INSERT INTO owned_badges 
-        (user_id, badge_id)
-    VALUES
-        (a_user_id, a_badge_id);
-END;;
- */
 CREATE PROCEDURE update_login_streak(
     IN a_user_id INT
 )
@@ -345,7 +329,8 @@ BEGIN
         quest_id
     FROM quests
     WHERE user_id = a_user_id
-    AND quest_status = 'uncompleted';
+    AND quest_status = 'uncompleted'
+    ORDER BY due_in ASC;
 END;;
 
 CREATE PROCEDURE show_daily_quests(
@@ -482,6 +467,65 @@ BEGIN
     WHERE user_id = a_user_id;
 END;;
 
+
+CREATE PROCEDURE edit_quest_name(
+    IN a_quest_id INT,
+    IN a_quest_name VARCHAR(255)
+)
+BEGIN
+    UPDATE quests
+    SET quest_name = a_quest_name
+    WHERE quest_id = a_quest_id;
+
+    UPDATE completed_quests
+    SET quest_name = a_quest_name
+    WHERE quest_id = a_quest_id;
+END;;
+
+
+CREATE PROCEDURE edit_quest_type(
+    IN a_quest_id INT,
+    IN a_quest_type VARCHAR(50),
+    IN a_due_time DATE
+)
+BEGIN
+    DECLARE b_due_time DATE;
+    IF a_due_time IS NULL THEN
+        IF a_quest_type = 'daily' THEN
+            SET b_due_time = CURDATE();
+        ELSEIF a_quest_type = 'weekly' THEN
+            SET b_due_time = DATE_ADD(CURDATE(), INTERVAL 7 DAY);
+    END IF;
+    ELSE
+        SET b_due_time = a_due_time;
+    END IF;
+
+    UPDATE quests
+    SET 
+        quest_type = a_quest_type,
+        due_time = b_due_time
+    WHERE quest_id = a_quest_id;
+
+    UPDATE completed_quests
+    SET 
+        quest_type = a_quest_type
+    WHERE quest_id = a_quest_id;
+END;;
+
+CREATE PROCEDURE show_selected_quest(
+    IN a_quest_id INT
+)
+BEGIN
+    SELECT 
+        quest_id,
+        quest_name,
+        quest_description, 
+        quest_type
+    FROM quests
+    WHERE quest_id = a_quest_id;
+END;;
+
+
 ---
 --- Triggers
 ---
@@ -529,29 +573,6 @@ BEGIN
 
     END IF;
 END;;
-/* 
-CREATE TRIGGER earn_streak_badges
-AFTER UPDATE 
-ON ongoing_streaks FOR EACH ROW
-BEGIN
-    IF NEW.streak_duration = 7 
-    AND NEW.streak_id = 1 THEN
-        INSERT INTO owned_badges
-            (badge_id, user_id)
-        VALUES 
-            (1, NEW.user_id)
-    ON DUPLICATE KEY
-        UPDATE badge_id = badge_id;
-    ELSEIF NEW.streak_duration = 10
-    AND NEW.streak_id = 2 THEN
-        INSERT INTO owned_badges
-            (badge_id, user_id)
-        VALUES 
-            (2, NEW.user_id)
-    ON DUPLICATE KEY
-        UPDATE badge_id = badge_id;
-    END IF;
-END;;  */
 
 CREATE TRIGGER earn_badges 
 AFTER INSERT 

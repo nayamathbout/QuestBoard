@@ -10,7 +10,6 @@ module.exports = {
     createQuest,
     completeQuest,
     deleteQuest,
-    // giveBadge,
     startStreak,
     endStreak,
     buyItem, 
@@ -34,7 +33,10 @@ module.exports = {
     updateLoginStreak,
     ensureBuyingSuccessfull,
     changeAvatar,
-    getUserAvatar
+    getUserAvatar,
+    editQuestName,
+    editQuestType,
+    showSelectedQuest
 };
 
 
@@ -94,15 +96,6 @@ async function deleteQuest(quest_id) {
 
     await db.end();
 }
-
-/* async function giveBadge(user_id, badge_id) {
-    let sql = `CALL give_badge(?, ?);`;
-    const db = await mysql.createConnection(config);
-
-    await db.query(sql, [user_id, badge_id]);
-
-    await db.end();
-} */
 
 async function startStreak(user_id, streak_id) {
     let sql = `CALL start_streak(?, ?);`;
@@ -351,4 +344,34 @@ async function getUserAvatar(user_id) {
 
     await db.end();
     return avatarId;
+}
+
+
+async function editQuestName(quest_id, quest_name) {
+    let sql = `CALL edit_quest_name(?, ?);`;
+    const db = await mysql.createConnection(config);
+
+    await db.query(sql, [quest_id, quest_name]);
+
+    await db.end();
+}
+
+async function editQuestType(quest_id, quest_type, due_date) {
+    let sql = `CALL edit_quest_type(?, ?, ?);`;
+    const db = await mysql.createConnection(config);
+
+    await db.query(sql, [quest_id, quest_type, due_date]);
+
+    await db.end();
+}
+
+async function showSelectedQuest(quest_id) {
+    let sql = `CALL show_selected_quest(?);`;
+    const db = await mysql.createConnection(config);
+
+    const [result] = await db.query(sql, [quest_id]);
+    await db.end();
+
+    const rows = Array.isArray(result) ? result : [];
+    return rows[0];
 }
