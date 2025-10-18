@@ -1,134 +1,152 @@
 <%- include("header", {title: title}); %>
 
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style/header.css">
+    <link rel="stylesheet" href="/style/profile.css">
+    <link rel="stylesheet" href="/style/footer.css">
+</head>
+
 <h1>Your Profile</h1>
 
-<p>About You:</p>
+<div class="myprofile">
+    <main class="main">
 
-<table border="1">
-<tr>
-    <td><img src="/style/img/avatars/<%= profile.user_avatar %>.png" width="100"></td>
-</tr>
-<tr>
-    <th>Name:</th><td><%= profile?.user_name %></td>
-</tr>
-<tr>
-    <th>Age:</th>
-    <td>
-        <% if (!profile.user_birthday) { %>
-            <ul><li><a href="add_birthday">Add your birthday</a></li></ul>
-        <% } else { %>
-            <%= profile.user_birthday %>
-        <% } %>
-    </td>
-</tr>
-<tr>
-    <th>Email:</th><td><%= profile?.email %></td>
-</tr>
-<tr>
-    <th>Bio:</th><td><%= profile?.user_bio %></td>
-</tr>
-</table>
-<a href="update_bio">Update your Bio</a>
-<a href="change_avatar">Change your Avatar</a>
+        <div class="card">
+            <p class="card-title">About you</p>
+            <table class="table">
+                <tr>
+                    <th>Name:</th><td><%= profile?.user_name %></td>
+                </tr>
+                <tr>
+                    <th>Age:</th>
+                    <td>
+                        <% if (!profile.user_birthday) { %>
+                            <a href="add_birthday" class="link">Add your birthday</a>
+                        <% } else { %>
+                            <%= profile.user_birthday %>
+                        <% } %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Email:</th><td><%= profile?.email %></td>
+                </tr>
+                <tr>
+                    <th>Bio:</th><td><%= profile?.user_bio %></td>
+                </tr>
+            </table>
+        </div>
 
-<p>Your Rewards:</p>
-
-<table border="1">
-<tr>
-    <th>Coins:</th><td><%= rewards?.coins %></td>
-</tr>
-<tr>
-    <th>XP:</th><td><%= rewards?.xp %></td>
-</tr>
-</table>
-
-<p>Your Streaks:</p>
-<table border="1">
-    <tr>
-        <th>Streak name:</th>
-        <th>Streak Description:</th>
-        <th>Streak duration:</th>
-    </tr>
-<% for (const row of streaks) { %>
-    <tr>
-        <td><%= row.streak_name %></td>
-        <td><%= row.streak_description %></td>
-        <td><%= row.streak_duration %></td>
-        <td>
-            <% if (row.streak_name === 'Log in streak') { %>
-                <img src="/style/img/streakone.png" width="50">
-            <% } else if (row.streak_name === 'Quest completion streak') { %>
-                <img src="/style/img/streaktwo.png" width="50">
-            <% } %>
-        </td>
-    </tr>
-<% }; %>
-</table>
+        <div class="actions">
+            <a href="update_bio" class="action-link">Update your Bio</a>
+            <a href="change_avatar" class="action-link">Change your Avatar</a>
+        </div>
 
 
-<p>Your Badges:</p>
-<table border="1">
-    <tr>
-        <th>Badge name:</th>
-        <th>Badge Description:</th>
-    </tr>
-<% for (const row of badges) { %>
-    <tr>
-        <td><%= row.badge_name %></td>
-        <td><%= row.badge_description %></td>
-        <td>
-            <% if (row.badge_name === '4 Quests Badge') { %>
-                <img src="/style/img/badgeone.png" width="50">
-            <% } else if (row.badge_name === '4 Daily Quests Badge') { %>
-                <img src="/style/img/badgetwo.png" width="50">
-            <% } else if (row.badge_name === '4 Weekly Quests Badge') { %>
-                <img src="/style/img/badgethree.png" width="50">
-            <% } %>
-        </td>
-    </tr>
-<% }; %>
-</table>
+        <div class="card">
+            <p class="card-title">Completed Quests</p>
+            <table class="table">
+                <tr>
+                    <th>Quest name</th>
+                    <th>Quest Description</th>
+                    <th>Type</th>
+                    <th>Completed on</th>
+                    <th></th><th></th><th></th>
+                </tr>
+                <% for (const row of completedQuests) { %>
+                <tr>
+                    <td><%= row.quest_name %></td>
+                    <td>
+                        <% if (!row.quest_description) { %>
+                            <a href="add_description?quest_id=<%= row.quest_id %>" class="link">Add description</a>
+                        <% } else { %>
+                            <%= row.quest_description %>
+                        <% } %>
+                    </td>
+                    <td><%= row.quest_type %></td>
+                    <td><%= row.completed_time %></td>
+                </tr>
+                <% }; %>
+            </table>
+        </div>
 
-<p>Completed Quests:</p>
-<table border="1">
-    <tr>
-        <th>Quest name</th>
-        <th>Quest Description</th>
-        <th>Type</th>
-        <th>Completed on</th>
-    </tr>
-<% for (const row of completedQuests) { %>
-    <tr>
-        <td><%= row.quest_name %></td>
-        <td>
-            <% if (!row.quest_description) { %>
-                <ul><li><a href="add_description?quest_id=<%= row.quest_id %>">Add description</a></li></ul>
-            <% } else { %>
-                <%= row.quest_description %>
-            <% } %></td>
-        <td><%= row.quest_type %></td>
-        <td><%= row.completed_time %></td>
-    </tr>
-<% }; %>
-</table>
+        <div class="card">
+            <p class="card-title">Owned Avatars</p>
+            <table class="table">
+                <tr>
+                    <th>Item</th>
+                    <th>Item Name</th>
+                    <th>Description</th>
+                </tr>
+                <% for (const row of ownedItems) { %>
+                <tr>
+                    <td><img src="/style/img/avatars/<%= row.item_id %>.png"></td>
+                    <td><%= row.item_name %></td>
+                    <td><%= row.item_description %></td>
+                </tr>
+                <% }; %>
+            </table>
+        </div>
+    </main>
 
+    <aside class="sidebar">
+        <div class="card profile">
+            <img src="/style/img/avatars/<%= profile?.user_avatar %>.png">
+        </div>
 
-<p>Owned avatars:</p>
-<table border="1">
-    <tr>
-        <th>Item</th>
-        <th>Item Name</th>
-        <th>Description</th>
-    </tr>
-<% for (const row of ownedItems) { %>
-    <tr>
-        <td><img src="/style/img/avatars/<%= row.item_id %>.png" width="100"></td>
-        <td><%= row.item_name %></td>
-        </td>
-        <td><%= row.item_description %></td>
-    </tr>
-<% }; %>
-</table>
+        <div class="card stats">
+            <div class="stat">
+                <div class="label">XP</div>
+                <div class="pill"><%= rewards?.xp %></div>
+            </div>
+            <div class="stat">
+                <div class="label">Coins</div>
+                <div class="pill"><%= rewards?.coins %></div>
+            </div>
+            <div class="stat">
+                <div class="label">Level</div>
+                <div class="pill"><%= rewards?.user_level %></div>
+            </div>
+            <div class="stat">
+                <div class="label">XP left to level up: </div>
+                <div class="pill"><%= rewards?.xp_left %></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <p class="card-title">Badges</p>
+            <div class="badges">
+                <% for (const row of badges) { %>
+                    <% if (row.badge_name === '4 Quests Badge') { %>
+                        <img src="/style/img/badgeone.png" alt="4 Quests Badge">
+                    <% } else if (row.badge_name === '4 Daily Quests Badge') { %>
+                        <img src="/style/img/badgetwo.png" alt="4 Daily Quests Badge">
+                    <% } else if (row.badge_name === '4 Weekly Quest Badge') { %>
+                        <img src="/style/img/badgethree.png" alt="4 Weekly Quest Badge">
+                    <% } %>
+                <% }; %>
+            </div>
+        </div>
+
+        <div class="card">
+            <p class="card-title">Streaks</p>
+            <div class="streaks">
+                <% for (const row of streaks) { %>
+                    <div class="streak">
+                        <% if (row.streak_name === 'Log in streak') { %>
+                            <img src="/style/img/streakone.png" alt="Log in streak">
+                        <% } else if (row.streak_name === 'Quest completion streak') { %>
+                            <img src="/style/img/streaktwo.png" alt="Quest completion streak">
+                        <% } %>
+                        <span class="count"><%= row.streak_duration %></span>
+                    </div>
+                <% }; %>
+            </div>
+        </div>
+    </aside>
+</div>
+
 
 
 <%- include("footer"); %>

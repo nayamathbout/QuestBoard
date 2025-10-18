@@ -1,116 +1,144 @@
 <%- include("header", {title: title}); %>
 
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style/header.css">
+    <link rel="stylesheet" href="/style/dashboard.css">
+    <link rel="stylesheet" href="/style/footer.css">
+</head>
+
 <h1>Welcome to QuestBoard</h1>
 
-<p>What do you wanna do today?</p>
+<div class="dashboard">
+    <main class="main">
+        <p class="lead">What do you wanna do today?</p>
+        <div class="actions">
+            <a href="quest" class="action-link">Create a quest</a>
+            <a href="profile" class="action-link">View Profile</a>
+        </div>
 
-<ul><li><a href="quest">Create a quest</a></li></ul>
-<ul><li><a href="profile"><img src="/style/img/avatars/<%= avatar %>.png" width="100"></a></li></ul>
+        <div class="card">
+            <p class="card-title">Upcoming Quests</p>
+            <table class="table">
+                <tr>
+                    <th>Quest name</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Due Date</th>
+                    <th>Due In</th>
+                    <th>Status</th>
+                    <th></th><th></th><th></th>
+                </tr>
+                <% for (const row of upcomingQuests) { %>
+                <tr>
+                    <td><%= row.quest_name %></td>
+                    <td>
+                        <% if (!row.quest_description) { %>
+                            <a href="add_description?quest_id=<%= row.quest_id %>" class="link">Add description</a>
+                        <% } else { %>
+                            <%= row.quest_description %>
+                        <% } %>
+                    </td>
+                    <td><%= row.quest_type %></td>
+                    <td><%= row.due_time %></td>
+                    <td><%= row.due_in%></td>
+                    <td><%= row.quest_status %></td>
+                    <td><a href="delete_quest?quest_id=<%= row.quest_id %>" class="link">Delete</a></td>
+                    <td><a href="edit_quest?quest_id=<%= row.quest_id %>" class="link">Edit</a></td>
+                    <td>
+                        <form method="post" action="/QuestBoard/dashboard">
+                            <input type="hidden" name="quest_id" value="<%= row.quest_id %>">
+                            <button type="submit" class="btn">Complete!</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }; %>
+            </table>
+        </div>
 
+        <div class="card">
+            <p class="card-title">Daily Quests</p>
+            <table class="table">
+                <tr>
+                    <th>Quest name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th></th><th></th>
+                </tr>
+                <% for (const row of dailyQuests) { %>
+                <tr>
+                    <td><%= row.quest_name %></td>
+                    <td>
+                        <% if (!row.quest_description) { %>
+                            <a href="add_description?quest_id=<%= row.quest_id %>" class="link">Add description</a>
+                        <% } else { %>
+                            <%= row.quest_description %>
+                        <% } %>
+                    </td>
+                    <td><%= row.quest_status %></td>
+                    <td><a href="delete_quest?quest_id=<%= row.quest_id %>" class="link">Delete</a></td>
+                    <td><a href="edit_quest?quest_id=<%= row.quest_id %>" class="link">Edit</a></td>
+                </tr>
+                <% }; %>
+            </table>
+        </div>
+    </main>
 
-<p>Your Rewards:</p>
-<table border="1">
-<tr>
-    <th>Coins:</th><td><%= rewards?.coins %></td>
-</tr>
-<tr>
-    <th>XP:</th><td><%= rewards?.xp %></td>
-</tr>
-<tr>
-    <th>Level:</th><td><%= rewards?.user_level %></td>
-</tr>
-<tr>
-    <th>XP left for next level:</th><td><%= rewards?.xp_left %></td>
-</tr>
-</table>
+    <aside class="sidebar">
+        <div class="card profile">
+            <img src="/style/img/avatars/<%= avatar %>.png" alt="Profile avatar">
+        </div>
 
-<% for (const row of badges) { %>
-    <% if (row.badge_name === '4 Quests Badge') { %>
-        <img src="/style/img/badgeone.png" width="150">
-    <% } else if (row.badge_name === '4 Daily Quests Badge') { %>
-        <img src="/style/img/badgetwo.png" width="150">
-    <% } else if (row.badge_name === '4 Weekly Quest Badge') { %>
-        <img src="/style/img/badgethree.png" width="150">
-    <% } %>
-<% }; %>
+        <div class="card stats">
+            <div class="stat">
+                <div class="label">XP</div>
+                <div class="pill"><%= rewards?.xp %></div>
+            </div>
+            <div class="stat">
+                <div class="label">Coins</div>
+                <div class="pill"><%= rewards?.coins %></div>
+            </div>
+            <div class="stat">
+                <div class="label">Level</div>
+                <div class="pill"><%= rewards?.user_level %></div>
+            </div>
+            <div class="stat">
+                <div class="label">XP left to level up: </div>
+                <div class="pill"><%= rewards?.xp_left %></div>
+            </div>
+        </div>
 
+        <div class="card">
+            <p class="card-title">Badges</p>
+            <div class="badges">
+                <% for (const row of badges) { %>
+                    <% if (row.badge_name === '4 Quests Badge') { %>
+                        <img src="/style/img/badgeone.png" alt="4 Quests Badge">
+                    <% } else if (row.badge_name === '4 Daily Quests Badge') { %>
+                        <img src="/style/img/badgetwo.png" alt="4 Daily Quests Badge">
+                    <% } else if (row.badge_name === '4 Weekly Quest Badge') { %>
+                        <img src="/style/img/badgethree.png" alt="4 Weekly Quest Badge">
+                    <% } %>
+                <% }; %>
+            </div>
+        </div>
 
-<% for (const row of streaks) { %>
-    <%= row.streak_duration %></td>
-    <% if (row.streak_name === 'Log in streak') { %>
-        <img src="/style/img/streakone.png" width="150">
-    <% } else if (row.streak_name === 'Quest completion streak') { %>
-        <img src="/style/img/streaktwo.png" width="150">
-    <% } %>
-<% }; %>
-
-
-<p>Upcoming Quests:</p>
-<table border="1">
-    <tr>
-        <th>Quest name</th>
-        <th>Description</th>
-        <th>Type</th>
-        <th>Due Date</th>
-        <th>Due In</th>
-        <th>Status</th>
-    </tr>
-<% for (const row of upcomingQuests) { %>
-    <tr>
-        <td><%= row.quest_name %></td>
-        <td>
-            <% if (!row.quest_description) { %>
-                <ul><li><a href="add_description?quest_id=<%= row.quest_id %>">Add description</a></li></ul>
-            <% } else { %>
-                <%= row.quest_description %>
-            <% } %>
-        </td>
-        <td><%= row.quest_type %></td>
-        <td><%= row.due_time %></td>
-        <td><%= row.due_in%></td>
-        <td><%= row.quest_status %></td>
-        <td>
-            <ul><li><a href="delete_quest?quest_id=<%= row.quest_id %>">Delete</a></li></ul>
-        </td>
-        <td>
-            <ul><li><a href="edit_quest?quest_id=<%= row.quest_id %>">Edit</a></li></ul>
-        </td>
-        <td>
-            <form method="post" action="/QuestBoard/dashboard">
-                <input type="hidden" name="quest_id" value="<%= row.quest_id %>">
-                <button type="submit">Complete!</button>
-            </form>
-        </td>
-    </tr>
-<% }; %>
-</table>
-
-
-<p>Daily Quests:</p>
-<table border="1">
-    <tr>
-        <th>Quest name</th>
-        <th>Description</th>
-        <th>Status</th>
-    </tr>
-<% for (const row of dailyQuests) { %>
-    <tr>
-        <td><%= row.quest_name %></td>
-        <td>
-            <% if (!row.quest_description) { %>
-                <ul><li><a href="add_description?quest_id=<%= row.quest_id %>">Add description</a></li></ul>
-            <% } else { %>
-                <%= row.quest_description %>
-            <% } %></td>
-        <td><%= row.quest_status %></td>
-        <td>
-            <ul><li><a href="delete_quest?quest_id=<%= row.quest_id %>">Delete</a></li></ul>
-        </td>
-        <td>
-            <ul><li><a href="edit_quest?quest_id=<%= row.quest_id %>">Edit</a></li></ul>
-        </td>
-    </tr>
-<% }; %>
-</table>
+        <div class="card">
+            <p class="card-title">Streaks</p>
+            <div class="streaks">
+                <% for (const row of streaks) { %>
+                    <div class="streak">
+                        <% if (row.streak_name === 'Log in streak') { %>
+                            <img src="/style/img/streakone.png" alt="Log in streak">
+                        <% } else if (row.streak_name === 'Quest completion streak') { %>
+                            <img src="/style/img/streaktwo.png" alt="Quest completion streak">
+                        <% } %>
+                        <span class="count"><%= row.streak_duration %></span>
+                    </div>
+                <% }; %>
+            </div>
+        </div>
+    </aside>
+</div>
 
 <%- include("footer"); %>

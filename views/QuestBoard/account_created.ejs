@@ -1,9 +1,16 @@
 <%- include("header2", {title: title}); %>
 
-<h1>Account created succcessfully!</h1>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style/account_created.css">
+    <link rel="stylesheet" href="/style/header2.css">
+    <link rel="stylesheet" href="/style/footer.css">
+</head>
 
-<p>Log in to your account</p>
-
-<ul><li><a href="login">Log In</a></li></ul>
+<h1>Account created successfully!</h1>
+<p class="message">Log in to your account:</p>
+<ul>
+    <li><a href="/QuestBoard/login" class="login-link">Log In</a></li>
+</ul>
 
 <%- include("footer"); %>

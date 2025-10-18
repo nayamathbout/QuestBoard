@@ -1,40 +1,46 @@
 <%- include("header2", {title: title}); %>
 
 <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="/style/signup.css">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style/header2.css">
+    <link rel="stylesheet" href="/style/signup.css">
+    <link rel="stylesheet" href="/style/footer.css">
 </head>
 
 
 <h1>Create an account</h1>
 
 
-<form method="post" action="/QuestBoard/signup" autocomplete="off">
-    <label for="user_name">Name:</label>
-    <input type="text" id="user_name" name="user_name" required autocomplete="off"><br>
+<div class="signup-section">
+    <div class="requirements">
+        <p1>Email must be unique and password must contain at least:</p1>
+        <ul>
+            <li>one lowercase letter</li>
+            <li>one uppercase letter</li>
+            <li>one digit (? = . * /)</li>
+            <li>8 characters</li>
+        </ul>
+    </div>
 
-    <label for="email">Email</label>
-    <input type="text" id="email" name="email" required autocomplete="off"><br>
+    <form method="post" action="/QuestBoard/signup" autocomplete="off">
+        <label for="user_name">Name:</label>
+        <input type="text" id="user_name" name="user_name" required autocomplete="off"><br>
 
-    <label for="password">Password</label>
-    <div style="position: relative; display: inline-block;">
-        <input type="password" id="password" name="password" required autocomplete="new-password">
-        <button type="button" class="view-button" onclick="togglePassword()">
-            View
-        </button>
-    </div><br>
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" required autocomplete="off"><br>
 
-    <button type="submit" class="signup-button">Create Account</button>
-</form>
+        <label for="password">Password</label>
+        <div style="position: relative; display: inline-block;">
+            <input type="password" id="password" name="password" required autocomplete="new-password">
+            <button type="button" class="view-button" onclick="togglePassword()">
+                View
+            </button>
+        </div><br>
 
-<p1>Email must be unique <br> & password must contain at least:</p1>
-    <ul> 
-        <li>one lowercase letter</li>
-        <li>one uppercase letter</li>
-        <li>one digit (? = . * /)</li>
-        <li>8 characters</li>
-    </ul>
-</p1>
+        <button type="submit" class="signup-button">Create Account</button>
+    </form>
+</div>
+
 
 <% if (error) { %>
     <div class="error"><%= error %></div>

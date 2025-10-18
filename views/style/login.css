@@ -1,64 +1,98 @@
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
 
 body {
     margin: 0;
-    padding: 0;
-    height: 100vh;
+    padding: clamp(16px, 4vh, 40px);
+    min-height: 100svh;
 
     background-image: url("/style/img/login.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: clamp(16px, 3vh, 32px);
 }
 
 @media (max-width: 768px) {
-    body {
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        background-image: url('/style/img/loginmedia.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-    }
+    body { background-image: url('/style/img/loginmedia.jpg'); }
 }
 
 h1 {
     color: #834d82;
-    font-size: 3rem;
-    text-decoration: none;
-    margin: 0 1rem;
+    font-size: clamp(1.75rem, 2.5vw + 1rem, 3rem);
     font-weight: bold;
     text-shadow: 0.15rem 0.15rem 0.4rem rgba(250, 145, 201, 0.782);
-    position: absolute;
-    top: 15vh;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    white-space: nowrap;
+    margin: clamp(8px, 2vh, 16px) 0 0 0;
+    text-align: center;
+    white-space: normal;
+}
+
+.login-section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: clamp(2rem, 6vw, 4rem);
+    margin-top: 3rem;
+}
+
+.login-note {
+    color: #522d6f;
+    max-width: 250px;
+    text-align: left;
+    line-height: 1.5;
+}
+
+.login-note p1 {
+    display: block;
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #522d6f;
+}
+
+.signup-link {
+    display: inline-block;
+    text-decoration: none;
+    border: 2px solid #c588cb;
+    border-radius: 0.5rem;
+    padding: 0.45rem 0.7rem;
+    font-weight: bold;
+    font-size: 1rem;
+    background-color: #834d82;
+    color: #1a011395;
+    transition: 0.3s;
+}
+
+.signup-link:hover { background-color: #a26ca3c6; }
+
+form {
+    width: min(90vw, 420px);
+    margin: 0;
+    padding: 1.25rem 1.5rem;
+    border-radius: 1rem;
+    background-color: #bd8afb57;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 h2 {
     color: #1a011395;
-    font-size: 2rem;
-    text-decoration: none;
-    margin: 0 0 1rem 0;
+    font-size: clamp(1.25rem, 1vw + 1rem, 2rem);
     font-weight: bold;
+    margin: 0 0 0.75rem 0;
     text-shadow: 0.15rem 0.15rem 0.4rem rgba(250, 145, 201, 0.782);
-}
-
-form {
-    width: 300px;
-    margin: 10vh auto;          
-    padding: 2rem;
-    border-radius: 1rem;
-    background-color: #bd8afb57;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 37vh;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    gap: 0.5rem;
 }
 
 label {
@@ -68,6 +102,7 @@ label {
 }
 
 input {
+    width: 100%;
     padding: 0.6rem;
     border: 2px solid #c588cb;
     border-radius: 0.5rem;
@@ -94,37 +129,23 @@ button {
     transition: 0.3s;
 }
 
-button:hover {
-    background-color: #a26ca3c6;
-}
+button:hover { background-color: #a26ca3c6; }
 
-p1 {
-    color: #834d82;
-    font-weight: bold;
-    margin-bottom: 0.3rem;
-    position: absolute;
-    left: 50%;
-    top: 77vh;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
-        text-shadow: 0.15rem 0.15rem 0.4rem rgba(250, 145, 201, 0.782);
-}
-
-.signup-link{
-    background-color: #834d82;
-    color: #1a011395;
-    border: none;
+.error {
+    width: min(90vw, 520px);
+    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
     border-radius: 0.5rem;
-    padding: 0.7rem;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 1.5rem;
-    border: 2px solid #c588cb;
-    text-decoration: none;
+    background: rgba(255, 0, 0, 0.08);
+    border: 1px solid rgba(255, 0, 0, 0.25);
+    color: #7b1c1c;
+    font-weight: 600;
 }
 
-.signup-link:hover {
-    background-color: #a26ca3c6;
+@media (max-width: 768px) {
+    .login-section {
+    flex-direction: column;
+    align-items: center;
+    }
+    .login-note { max-width: 90%; }
 }
