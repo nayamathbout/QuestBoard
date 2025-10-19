@@ -1,15 +1,12 @@
 .site-footer {
     width: 100%;
-    margin-top: auto;                         /* magic that pushes it to the bottom */
+    margin-top: auto;
     padding: clamp(8px, 1.2vw, 16px) 0;
     text-align: center;
 
     color: #1a011395;
     font-weight: bold;
     font-size: clamp(1rem, 1.2vw + 0.8rem, 2rem);
-
-    background: rgba(255,255,255,0.4);
-    backdrop-filter: saturate(120%) blur(2px);
 }
 
 .site-footer p {

@@ -1,14 +1,22 @@
 <%- include("header", {title: title}); %>
 
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style/header2.css">
+    <link rel="stylesheet" href="/style/edit_quest2.css">
+    <link rel="stylesheet" href="/style/footer.css">
+</head>
+
 <h1>Add your birthday: </h1>
 
+<div class="edit-section">
+    <form method="post" action="/QuestBoard/add_birthday">
 
-<form method="post" action="/QuestBoard/add_birthday">
-
-    <label for="birthday">Your Birthday</label>
-    <input type="date" id="birthday" name="birthday" 
-        max="<%= new Date().toISOString().split('T')[0] %>" required><br>
-    <button type="submit">Add</button>
-</form>
+        <label for="birthday">Your Birthday</label>
+        <input type="date" id="birthday" name="birthday" 
+            max="<%= new Date().toISOString().split('T')[0] %>" required><br>
+        <button type="submit" class="button">Add</button>
+    </form>
+</div>
 
 <%- include("footer"); %>

@@ -1,32 +1,37 @@
 <%- include("header", {title: title}); %>
 
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style/header.css">
+    <link rel="stylesheet" href="/style/store.css">
+    <link rel="stylesheet" href="/style/footer.css">
+</head>
+
 <h1>Change your Avatar</h1>
 
 
-<p>Owned avatars:</p>
-<table border="1">
-    <tr>
-        <th>Item</th>
-        <th>Item Name</th>
-        <th>Description</th>
-    </tr>
-<% for (const row of ownedItems) { %>
-    <tr>
-        <td><img src="/style/img/avatars/<%= row.item_id %>.png" width="100"></td>
-        <td><%= row.item_name %></td>
-        </td>
-        <td><%= row.item_description %></td>
-        <td>
-            <form method="post" action="/QuestBoard/change_avatar">
-                <input type="hidden" name="item_id" value="<%= row.item_id %>">
-                <button type="submit">Choose!</button>
-            </form>
-        </td>
-    </tr>
-<% }; %>
-</table>
-
-
-<ul><li><a href="store">Buy More Avatars</a></li></ul>
+<div class="store">
+    <div class="card">
+        <p class="card-title">Owned Avatars</p>
+        <table class="table">
+            <tr>
+                <th>Item</th>
+                <th>Item Name</th>
+                <th>Description</th>
+            </tr>
+            <% for (const row of ownedItems) { %>
+            <tr>
+                <td><img src="/style/img/avatars/<%= row.item_id %>.png"></td>
+                <td><%= row.item_name %></td>
+                <td><%= row.item_description %></td>
+            </tr>
+            <% }; %>
+        </table>
+    </div>
+    <div class="actions">
+        <a href="store" class="action-link">Buy More Avatars</a>
+    </div>
+</div>
 
 <%- include("footer"); %>

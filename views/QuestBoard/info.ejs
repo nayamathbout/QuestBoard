@@ -1,8 +1,15 @@
 <%- include("header", {title: title}); %>
 
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style/account_created.css">
+    <link rel="stylesheet" href="/style/header2.css">
+    <link rel="stylesheet" href="/style/footer.css">
+</head>
+
 <h1>Information and Logic of QuestBoard</h1>
 
-<p>Profile:</p>
+<p class="message">Profile:</p>
 <ul>
     <li>Each user signs up with an email and a password.</li>
     <li>Passwords are hash stored in our data-base.</li>
@@ -10,20 +17,22 @@
     <li>Users can change their avatar picture and bio.</li>
 </ul>
 
-<p>Quests:</p>
+<p class="message">Quests:</p>
 <ul> 
     <li>Quests are create with mandatory name & due date.</li>
     <li>Quest descriptions are optional and can be added in afterhand.</li>
+    <li>Quest's name, description, type and due time can be edited at any time.</li>
+    <li>Completing 4 quests regardless of the type gives you a badge.</li>
     <li>Quests can be delated. Completed quests can still be visible.</li>
     <li>Daily:<br>
         Daily quests are quests that reoccure daily, you have until midnight to finish them.
         You earn 50 in game coins & 5 XPs when you complete them. Missing a daily quest may
-        result downgrade in your avarage preformance rate. <br></li>
+        result downgrade in your avarage preformance rate. Completing 4 daily quests gives you a badge.<br></li>
     <li>Weekly:<br>
         Weekly quests are quests that reoccure weekly, you have until midnight next week to
         finish them. You earn 100 in game coins & 10 XPs when you complete them. Missing a weekly quest
         may result downgrade in your avarage preformance. Completing a weekly quest before the
-        due date results upgrade in your avarage preformance. Completing a weekly quests gives 
+        due date results upgrade in your avarage preformance. Completing 4 weekly quests gives 
         you a badge.<br></li>
     <li>One-time:<br>
         One-time quests are quests that don't reoccure and can only be completed once. You 
@@ -33,7 +42,7 @@
         in your weekly preformance.</li>
 </ul>
 
-<p>Rewards:</p>
+<p class="message">Rewards:</p>
 <ul>
     <li>Coins:<br>
         In game coins can be earned by completing quests. Daily quests give you 50, Weekly quests
@@ -51,7 +60,7 @@
         losing the login streak & missing or completing a task late results losing the quest completion streak. </li>
 </ul>
 
-<p>Levels:</p>
+<p class="message">Levels:</p>
 <ul>
     <li>Levels are based off on XPs.</li>
     <li>Each player starts at level 1.</li>
@@ -59,7 +68,7 @@
     <li>You can't level down when you reach a new level.</li>
 </ul>
 
-<p>Avatars:</p>
+<p class="message">Avatars:</p>
 <ul>
     <li>Each player have a no-avatar avatar.</li>
     <li>You can buy new avatars from the store.</li>

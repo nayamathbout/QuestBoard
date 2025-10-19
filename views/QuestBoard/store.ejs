@@ -1,43 +1,54 @@
 <%- include("header", {title: data.title}); %>
 
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style/header.css">
+    <link rel="stylesheet" href="/style/store.css">
+    <link rel="stylesheet" href="/style/footer.css">
+</head>
+
+
 <h1>QuestBoard Store:</h1>
-
-<p>Your Coins:</p>
-<table border="1">
-<tr>
-    <th>Coins:</th><td><%= rewards?.coins %></td>
-</tr>
-</table>
-
-<p>Shop avatars:</p>
-<table border="1">
-    <tr>
-        <th>Item</th>
-        <th>Item Name</th>
-        <th>Cost</th>
-        <th>Description</th>
-    </tr>
-<% for (const row of store) { %>
-    <tr>
-        <td><img src="/style/img/avatars/<%= row.item_id %>.png" width="100"></td>
-        <td><%= row.item_name %></td>
-        </td>
-        <td><%= row.cost %></td>
-        <td><%= row.item_description %></td>
-        <td>
-            <form method="post" action="/QuestBoard/store">
-                <input type="hidden" name="item_id" value="<%= row.item_id %>">
-                <button type="submit">Buy!</button>
-            </form>
-        </td>
-    </tr>
-<% }; %>
-</table>
-
-<% if (data.error) { %>
-    <div class="error"><%= data.error %></div>
-<% } %>
-
+<div class="store">
+    <main class="main">
+        <div class="card">
+            <p class="card-title">Shop avatars:</p>
+            <table class="table">
+                <tr>
+                    <th>Item</th>
+                    <th>Item Name</th>
+                    <th>Cost</th>
+                    <th>Description</th>
+                </tr>
+                <% for (const row of store) { %>
+                <tr>
+                    <td><img src="/style/img/avatars/<%= row.item_id %>.png" width="100"></td>
+                    <td><%= row.item_name %></td>
+                    <td><%= row.cost %></td>
+                    <td><%= row.item_description %></td>
+                    <td>
+                        <form method="post" action="/QuestBoard/store">
+                            <input type="hidden" name="item_id" value="<%= row.item_id %>">
+                            <button type="submit" class="button">Buy!</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }; %> 
+            </table>
+        </div>
+        <% if (data.error) { %>
+            <div class="error"><%= data.error %></div>
+        <% } %>
+    </main>
+    <aside class="sidebar">
+        <div class="card stats">
+            <div class="stat">
+                <div class="label">Coins</div>
+                <div class="pill"><%= rewards?.coins %></div>
+            </div>
+        </div>
+    </aside>
+</div>
 
 
 <%- include("footer"); %>

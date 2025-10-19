@@ -1,14 +1,22 @@
 <%- include("header", {title: title}); %>
 
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style/header2.css">
+    <link rel="stylesheet" href="/style/edit_quest2.css">
+    <link rel="stylesheet" href="/style/footer.css">
+</head>
+
 <h1>Add description to your quest: </h1>
 
+<div class="edit-section"></div> 
+    <form method="post" action="/QuestBoard/add_description" autocomplete="off">
+        <input type="hidden" name="quest_id" value="<%= quest_id %>">
 
-<form method="post" action="/QuestBoard/add_description" autocomplete="off">
-    <input type="hidden" name="quest_id" value="<%= quest_id %>">
-
-    <label for="description">Description</label>
-    <input type="text" id="description" name="description" required autocomplete="off"><br>
-    <button type="submit">Add</button>
-</form>
+        <label for="description">Description</label>
+        <input type="text" id="description" name="description" required autocomplete="off"><br>
+        <button type="submit" class="button">Add</button>
+    </form>
+</div>
 
 <%- include("footer"); %>

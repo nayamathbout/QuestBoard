@@ -1,29 +1,38 @@
 <%- include("header", {title: title}); %>
 
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style/header2.css">
+    <link rel="stylesheet" href="/style/quest.css">
+    <link rel="stylesheet" href="/style/footer.css">
+</head>
+
 <h1>Add a quest</h1>
 
-<form method="post" action="/QuestBoard/quest" autocomplete="off">
-    <label for="quest_name">Quest Name:</label>
-    <input type="text" id="quest_name" name="quest_name" required autocomplete="off"><br>
+<div class="createQuest-section">
+    <form method="post" action="/QuestBoard/quest" autocomplete="off">
+        <label for="quest_name">Quest Name:</label>
+        <input type="text" id="quest_name" name="quest_name" required autocomplete="off"><br>
 
-    <label for="quest_type">Type: </label>
-    <select id="quest_type" name="quest_type" required>
-        <option value="" disabled selected>Select type</option>
-        <option value="daily">Daily</option>
-        <option value="weekly">Weekly</option>
-        <option value="other">One time quest</option>
-    </select><br>
+        <label for="quest_type">Type: </label>
+        <select id="quest_type" name="quest_type" required>
+            <option value="" disabled selected>Select type</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="other">One time quest</option>
+        </select><br>
 
-    <div id="due_date_container" style="display:none; margin-top:10px;">
-    <label for="due_date">Due date:</label>
-    <input type="date" id="due_date" name="due_date" required autocomplete="off">
-    </div>
+        <div id="due_date_container" style="display:none; margin-top:10px;">
+        <label for="due_date">Due date:</label>
+        <input type="date" id="due_date" name="due_date" required autocomplete="off">
+        </div>
 
-    <label for="description">Description: </label>
-    <input type="text" id="description" name="description" autocomplete="off"<br>
+        <label for="description">Description: </label>
+        <input type="text" id="description" name="description" autocomplete="off"><br>
 
-    <button type="submit">Create Quest</button>
-</form>
+        <button type="submit" class="createQuest-button">Create Quest</button>
+    </form>
+</div>
 
 <script>
     const questTypeSelect = document.getElementById('quest_type');

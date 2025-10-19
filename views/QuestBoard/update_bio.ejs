@@ -1,13 +1,20 @@
 <%- include("header", {title: title}); %>
 
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style/header2.css">
+    <link rel="stylesheet" href="/style/edit_quest2.css">
+    <link rel="stylesheet" href="/style/footer.css">
+</head>
+
 <h1>Update your Bio: </h1>
 
+<div class="edit-section">
+    <form method="post" action="/QuestBoard/update_bio" autocomplete="off">
 
-<form method="post" action="/QuestBoard/update_bio" autocomplete="off">
-
-    <label for="bio">Your Bio</label>
-    <input type="text" id="bio" name="bio" required autocomplete="off"><br>
-    <button type="submit">Update</button>
-</form>
-
+        <label for="bio">Your Bio</label>
+        <input type="text" id="bio" name="bio" required autocomplete="off"><br>
+        <button type="submit" class= "button">Update</button>
+    </form>
+</div>
 <%- include("footer"); %>

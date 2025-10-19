@@ -1,27 +1,33 @@
 <%- include("header", {title: title}); %>
 
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style/header2.css">
+    <link rel="stylesheet" href="/style/edit_quest2.css">
+    <link rel="stylesheet" href="/style/footer.css">
+</head>
+
 <h1>Add description to your quest: </h1>
 
+<div class="edit-section">
+    <form method="post" action="/QuestBoard/edit_quest_type" autocomplete="off">
+        <input type="hidden" name="quest_id" value="<%= quest_id %>">
+        <label for="quest_type">Type: </label>
+        <select id="quest_type" name="quest_type" required>
+            <option value="" disabled selected>Select type</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="other">One time quest</option>
+        </select><br>
 
-<form method="post" action="/QuestBoard/edit_quest_type" autocomplete="off">
-    <input type="hidden" name="quest_id" value="<%= quest_id %>">
+        <div id="due_date_container" style="display:none; margin-top:10px;">
+            <label for="due_date">Due date:</label>
+            <input type="date" id="due_date" name="due_date" required autocomplete="off">
+        </div>
 
-    <label for="quest_type">Type: </label>
-    <select id="quest_type" name="quest_type" required>
-        <option value="" disabled selected>Select type</option>
-        <option value="daily">Daily</option>
-        <option value="weekly">Weekly</option>
-        <option value="other">One time quest</option>
-    </select><br>
-
-    <div id="due_date_container" style="display:none; margin-top:10px;">
-    <label for="due_date">Due date:</label>
-    <input type="date" id="due_date" name="due_date" required autocomplete="off">
-    </div>
-
-    <button type="submit">Edit</button>
-</form>
-
+        <button type="submit" class="button">Edit</button>
+    </form>
+</div> 
 
 <script>
     const questTypeSelect = document.getElementById('quest_type');
