@@ -1,0 +1,162 @@
+QuestBoard:
+QuestBoard is a webbased gambified habit and productivitie tracker. It helps users
+manage their quests and keep track of their progress while still motivated.
+
+Features: 
+- Registration system 
+- Login system (sessions)
+- Tasks/quests system with timing and reoccurance
+- Rewards and levels
+- Streaks 
+- Ingame store
+
+Installation (via bash): 
+- npm install
+- npm install promise-mysql
+- npm install express-session
+- npm install --save-dev vitest
+- npm install --save-dev supertest
+
+Database configation: 
+{
+    "host":     "localhost",
+    "user":     "questboard",
+    "password": "REDACTED_DEMO_PASSWORD",
+    "database": "QuestBoard",
+    "multipleStatements": true
+}
+
+Database setup:
+Run in order on bash: (password = "REDACTED_DEMO_PASSWORD")
+- cd sql
+- mariadb -u questboard -p QuestBoard < mariadb -u questboard -p < setup.sql   
+- mariadb -u questboard -p QuestBoard < ddl.sql
+- mariadb -u questboard -p QuestBoard (for next line)
+- SET GLOBAL event_scheduler = ON;
+- exit;
+- mariadb -u questboard -p QuestBoard < functions.sql
+- mariadb -u questboard -p QuestBoard < insert.sql   
+
+Running the application:
+- node index.js
+- open your browser and go to: "http://localhost:1337/QuestBoard"
+
+Vitest: 
+- npm test
+
+Smoke test: 
+- npm smoke
+
+Manualy test the application: 
+- open "http://localhost:1337/QuestBoard"
+- you must be redirected to QuestBoard/login
+- click on "sign up" to be redirected to QuestBoard/signup
+- create an account by entering your name, email and a password that follows the listed conditions
+- you will be redirected to QuestBoard/account_created, click on "log in"
+- log in by entering the email and password you've just created an account with
+- you will be redirected to QuestBoard/dashboard
+- click on "create a quest" to be redirected to QuestBoard/quest
+- create a quest by filling the form and submiting It
+- when redirected to dashboard, complete the quest by clicking on "complete" next to the quest's row on the table "upcoming quests"
+- you will get xp and coins
+- to know the conditions for the rewards such as how many coins and xps you get and the rules for badges and streaks open 
+  "information" from the header
+- open your profile by clicking on "profile" to view your information, completed quests and rewards (rewards can also be viewed on 
+  the dashboard)
+- you can test editing your quest by clicking on "edit" next to the quest on the upcoming quests table in the dashboard and chosing 
+  what part you would like to edit
+- you can delete a quest by clickig on "delete" next to the quest on the upcoming quests table in the dashboard
+- you can change your bio and profile picture from the profile by clicking on the action bottum you wanna do
+- open the shop by clicking on "store" in the header
+- when redirected to the store, click on "buy" to buy the avatar
+- you can view your owned avatars in the profile
+- finally, click on "log out" in the header to log out of the session and be redirected to login 
+
+Prototype overview: 
+
+Routing logic: 
+- header2 has links to QuestBoard/login & QuestBoard/signup for users before logging in
+- /QuestBoard redirects you to QuestBoard/login with no rendering
+- /QuestBoard/login is where you log in
+- /QuestBoard/signup is where you submit a form and get redirected to /QuestBoard/account_created
+- In /QuestBoard/account_created there is a link to QuestBoard/login
+- /QuestBoard/dashboard can only be accessed after submitting the log in form in QuestBoard/login
+- header links are only accessable after logging in, they are: QuestBoard/profile, QuestBoard/dashboard QuestBoard/store, 
+  QuestBoard/information, QuestBoard/logout 
+- There are 4 route actions in QuestBoard/dashboard: 
+  links: QuestBoard/quest, QuestBoard/profile, QuestBoard/edit_quest, QuestBoard/add_description
+  action: QuestBoard/delete_quest which preform a post action and redirects you to QuestBoard/dashboard
+- QuestBoard/profile has 4 links: QuestBoard/add_description, QuestBoard/add_birthday, QuestBoard/update_bio, 
+  QuestBoard/change_avatar
+- QuestBoard/update_bio redirects you back to QuestBoard/profile
+- QuestBoard/add_birthday redirects you back to QuestBoard/profile
+- QuestBoard/change_avatar redirects you back to QuestBoard/profile
+- QuestBoard/add_description redirects you to QuestBoard/dashboard
+- QuestBoard/edit_quest has 3 links: QuestBoard/edit_name, QuestBoard/edit_description, QuestBoard/edit_type
+- All three links redirect you to QuestBoard/dashboard after submitting the form on them
+- QuestBoard info has no links (other than the header links)
+- QuestBoard/logout only redirects you to QuestBoard/login and logs you out of the session with no rendering
+
+Registration/ login system functionality: 
+- In the datebase there are: inlogging table & profiles table
+- Inlogging has email, hashed-password (maneged by bycript) and user-id 
+- profiles has other information such as name, birthday, profile picture id ..
+- When signing up, app checks if the email is unique and if the password follows conditions, if so, app inserts
+  the user information into the databases
+- When logging in, app checks if the email and password are ture and logs the user in using session system 
+- Edits are made via procedures (for example updating profile picture)
+
+Avatar/ store system:
+- In the database there are: store & owned items tables
+- store has information on the items the app sells
+- owned items has links between the item-id and the user-id who owns the item
+- when user buys an item, the app inserts the item id with the user id to the owned items table
+
+Quest system functionality: 
+- In the database there are: quests & completed quests tables
+- when the user creates a quest, the app links it to the user with user_id and inserts it to the quest_table
+- The app sets the due time based off of the quest edit_type
+- When completing a quest, the app changes the status of the quest
+- The app inserts the quest to the completed quests table
+- After midnight (for daily quests) or 7 days after creation time (weekly quests), the app resets the due 
+  time via events
+- Edits are made via procedures
+
+Streak system: 
+- In the database there are: streaks & ongoing streaks tables
+- Streaks table has information on the streaks
+- Ongoing streaks links the streak id with the user id and the last login date
+- When logging in, the app checks the last login date, if it's the same date the app does nothing, if its the 
+  very next day, the app adds 1 to the streak, if it's more than a day, the app resets the streak to 1
+- When completing a quest, the app checks the status, if it was late, the app resets the streak to 1, if it's 
+  early or on time, the app adds 1
+
+Badges: 
+- In the database there are: badges, owned badges tables
+- Owned badges table links the badge from the badges table to the user id from the profile table
+- Users get badges via triggers
+
+Project structure:
+QuestBoard/
+│
+├── index.js #main file
+├── index.js #info
+├── package.json #scripts..
+├── node_modules/ #packs
+├── middleware/ #middleware
+├── functions/ #js functions
+├── route/ #route file
+├── views/ #html, css & imgages
+├── config/ #database configation
+├── route.test.js #test
+└── sql/ # sql files
+
+Teck Stack: 
+Backend: Node.js, express
+Frontend: html, css
+Database: MySQL with promise-mysql
+Testing: Vitest, supertest
+Session handling: express-session
+
+Software Engineering student: Naya Mathbout
+Accronym: namt24

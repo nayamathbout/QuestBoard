@@ -25,6 +25,12 @@
                 <td><img src="/style/img/avatars/<%= row.item_id %>.png"></td>
                 <td><%= row.item_name %></td>
                 <td><%= row.item_description %></td>
+                <td>
+                    <form method="post" action="/QuestBoard/change_avatar">
+                        <input type="hidden" name="item_id" value="<%= row.item_id %>">
+                        <button type="submit" class="button">Choose!</button>
+                    </form>
+                </td>
             </tr>
             <% }; %>
         </table>
