@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "smoke": "curl -I http://localhost:1337/QuestBoard/login"
+    "smoke": "curl -I http://localhost:1337/QuestBoard/login",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
