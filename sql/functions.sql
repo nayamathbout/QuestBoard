@@ -1,3 +1,5 @@
+USE QuestBoard;
+
 ---
 --- triggers, functions & procedures
 ---

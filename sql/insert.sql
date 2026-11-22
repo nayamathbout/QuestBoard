@@ -1,3 +1,5 @@
+USE QuestBoard;
+
 ---
 --- insert into the tables
 ---

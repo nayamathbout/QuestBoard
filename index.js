@@ -1,4 +1,5 @@
 "use strict";
+require("dotenv").config();
 
 const port    = process.env.DBWEBB_PORT || 1337;
 const path    = require("path");
@@ -14,7 +15,7 @@ app.use(middleware.logIncomingToConsole);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
-    secret: "REDACTED_SESSION_SECRET",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true
 }));

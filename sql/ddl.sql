@@ -1,3 +1,5 @@
+USE QuestBoard;
+
 --- 
 --- create tables
 ---

@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Database credentials
+config/questboard.json
+
+# Environment variables
+.env
+.env.*
+
+# macOS and editor files
+.DS_Store
+.vscode/
+
+# Test coverage
+coverage/
